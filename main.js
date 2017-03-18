@@ -1,4 +1,4 @@
-function drawToCanvas(){
+function drawArrayToCanvas(csvArray){
 	var canvas = document.getElementById('mycanvas');
 	var context = canvas.getContext('2d');
 	// キャンバス全体のピクセル情報を取得
@@ -35,6 +35,31 @@ function handleFileSelect(evt) {
 			f.lastModifiedDate.toLocaleDateString(), '</li>');
 	}
 	document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+
+	var reader = new FileReader();
+
+	reader.onload = (function(theFile) {
+		return function(e) {
+      console.log(reader.result);
+      // csvファイルの中身を配列に
+      var meshArray = convertCsvToArray(reader.result);
+		};
+	})(f);
+
+	// Read in the image file as a data URL.
+	reader.readAsText(files[0]);
+}
+
+function convertCsvToArray(csvText){
+  var colArray = csvText.split('\n')
+    .filter(function(line){
+      return line != "";
+    })
+    .map(function(line){
+      return line.split(',').filter(function(elem){
+        return elem != "";
+      });
+    });
 }
 
 function handleDragOver(evt) {
