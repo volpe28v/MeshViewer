@@ -82,6 +82,8 @@ function onMouseOver(e) {
 function onMouseOut(e) {
 }
 
+var latitude;
+var longitude;
 function onMouseMove(e) {
 	if (meshArray == null) return;
 
@@ -89,13 +91,28 @@ function onMouseMove(e) {
 	x = e.clientX - rect.left;
 	y = e.clientY - rect.top;
 
-	var latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
-	var longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
+	latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
+	longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
 
 	var value = meshArray[y][x];
 	document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
 	document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
 	document.getElementById('value').innerHTML = value + " mm";
+}
+
+function onClick(e) {
+	if (meshArray == null) return;
+  view_map(latitude, longitude);
+}
+
+function view_map(lati, longi) {
+	var url1 = "http://maps.google.co.jp/maps?";
+	var url2 = "&z=7&output=embed";
+
+  var query = "q=" + lati + "," + longi;
+
+	//地図表示
+	document.getElementById("mapfield").src = url1 + query + url2;
 }
 
 // const
@@ -110,6 +127,7 @@ var context = canvas.getContext('2d');
 canvas.addEventListener('mouseover', onMouseOver, false);
 canvas.addEventListener('mouseout', onMouseOut, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
+canvas.addEventListener('click', onClick, false);
 
 var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);

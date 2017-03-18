@@ -11,24 +11,33 @@
   background-color:#eee;
   text-align:center;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 </style>
   </head>
   <body>
     <div>ここにMSMデータの csv ファイルをドロップしてください</div>
-    <div id="drop_zone">
-      <canvas id="mycanvas" width="481" height="505"></canvas>
-    </div>
-
     <table>
-      <tr><td>座標</td><td><span id="pos"></span></td></tr>
-      <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-      <tr><td>降水量</td><td><span id="value"></span></td></tr>
-    </table>
-    <div id="lati"></div>
-    <div id="value"></div>
-    <div id="file_name"></div>
+      <tr>
+        <td valign="top">
+          <div id="drop_zone">
+            <canvas id="mycanvas" width="481" height="505"></canvas>
+          </div>
+
+          <table>
+            <tr><td>座標</td><td><span id="pos"></span></td></tr>
+            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+            <tr><td>降水量</td><td><span id="value"></span></td></tr>
+          </table>
+          <div id="lati"></div>
+          <div id="value"></div>
+          <div id="file_name"></div>
+        </td>
+        <td valign="top">
+          <iframe id="mapfield" src="http://maps.google.co.jp/maps?q=43.0645,141.352634&z=7&output=embed" width="481" height="505"></iframe>
+        </td>
+
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
