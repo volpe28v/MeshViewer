@@ -5,25 +5,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
-#drop_zone {
-  width: 500px;
-  height: 100px;
+
+#mycanvas {
   margin:5px;
-  border:2px dotted #aaa;
   background-color:#eee;
-  border-radius: 10px;
-  padding:30px 15px 15px 15px;
   text-align:center;
   vertical-align: middle;
 }
-</style>
 
+</style>
   </head>
   <body>
-    <div id="drop_zone">ここにMSMデータの csv ファイルをドロップしてください</div>
-    <canvas id="mycanvas" width="481" height="505"></canvas>
-    <output id="list"></output>
+    <div>ここにMSMデータの csv ファイルをドロップしてください</div>
+    <div id="drop_zone">
+      <canvas id="mycanvas" width="481" height="505"></canvas>
+    </div>
 
+    <table>
+      <tr><td>座標</td><td><span id="pos"></span></td></tr>
+      <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+      <tr><td>降水量</td><td><span id="value"></span></td></tr>
+    </table>
+    <div id="lati"></div>
+    <div id="value"></div>
+    <div id="file_name"></div>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
