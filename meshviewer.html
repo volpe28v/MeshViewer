@@ -11,24 +11,33 @@
   background-color:#eee;
   text-align:center;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 </style>
   </head>
   <body>
     <div>ここにMSMデータの csv ファイルをドロップしてください</div>
-    <div id="drop_zone">
-      <canvas id="mycanvas" width="481" height="505"></canvas>
-    </div>
-
     <table>
-      <tr><td>座標</td><td><span id="pos"></span></td></tr>
-      <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-      <tr><td>降水量</td><td><span id="value"></span></td></tr>
-    </table>
-    <div id="lati"></div>
-    <div id="value"></div>
-    <div id="file_name"></div>
+      <tr>
+        <td valign="top">
+          <div id="drop_zone">
+            <canvas id="mycanvas" width="481" height="505"></canvas>
+          </div>
+
+          <table>
+            <tr><td>座標</td><td><span id="pos"></span></td></tr>
+            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+            <tr><td>降水量</td><td><span id="value"></span></td></tr>
+          </table>
+          <div id="lati"></div>
+          <div id="value"></div>
+          <div id="file_name"></div>
+        </td>
+        <td valign="top">
+          <iframe id="mapfield" src="http://maps.google.co.jp/maps?q=43.0645,141.352634&z=7&output=embed" width="481" height="505"></iframe>
+        </td>
+
     <script type="text/javascript">
 function drawArrayToCanvas(meshArray){
 	//console.log(meshArray);
@@ -114,6 +123,8 @@ function onMouseOver(e) {
 function onMouseOut(e) {
 }
 
+var latitude;
+var longitude;
 function onMouseMove(e) {
 	if (meshArray == null) return;
 
@@ -121,13 +132,28 @@ function onMouseMove(e) {
 	x = e.clientX - rect.left;
 	y = e.clientY - rect.top;
 
-	var latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
-	var longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
+	latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
+	longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
 
 	var value = meshArray[y][x];
 	document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
 	document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
 	document.getElementById('value').innerHTML = value + " mm";
+}
+
+function onClick(e) {
+	if (meshArray == null) return;
+  view_map(latitude, longitude);
+}
+
+function view_map(lati, longi) {
+	var url1 = "http://maps.google.co.jp/maps?";
+	var url2 = "&z=7&output=embed";
+
+  var query = "q=" + lati + "," + longi;
+
+	//地図表示
+	document.getElementById("mapfield").src = url1 + query + url2;
 }
 
 // const
@@ -142,10 +168,12 @@ var context = canvas.getContext('2d');
 canvas.addEventListener('mouseover', onMouseOver, false);
 canvas.addEventListener('mouseout', onMouseOut, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
+canvas.addEventListener('click', onClick, false);
 
 var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
+
 
     </script>
   </body>
