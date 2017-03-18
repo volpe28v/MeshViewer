@@ -2,7 +2,7 @@ function drawArrayToCanvas(meshArray){
 	var canvas = document.getElementById('mycanvas');
 	var context = canvas.getContext('2d');
 
-  console.log(meshArray);
+  //console.log(meshArray);
   canvas.width = meshArray[0].length;
   canvas.height = meshArray.length;
 
@@ -14,7 +14,7 @@ function drawArrayToCanvas(meshArray){
     if (max < flatten[i]) max = flatten[i];
     else if (min > flatten[i]) min = flatten[i];
   }
-  console.log(min + " " + max);
+  //console.log(min + " " + max);
 
 	var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 	var width = imageData.width, height = imageData.height;
@@ -43,7 +43,6 @@ function handleFileSelect(evt) {
 
 	var files = evt.dataTransfer.files; // FileList object.
 
-	// files is a FileList of File objects. List some properties.
 	var output = [];
 	for (var i = 0, f; f = files[i]; i++) {
 		output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
@@ -56,7 +55,7 @@ function handleFileSelect(evt) {
 
 	reader.onload = (function(theFile) {
 		return function(e) {
-      console.log(reader.result);
+      //console.log(reader.result);
       // csvファイルの中身を配列に
       var meshArray = convertCsvToArray(reader.result);
       drawArrayToCanvas(meshArray);
@@ -85,7 +84,6 @@ function handleDragOver(evt) {
 	evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
-// Setup the dnd listeners.
 var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
