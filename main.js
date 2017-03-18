@@ -8,8 +8,12 @@ function drawArrayToCanvas(meshArray){
 
   // 最大値,最小値を求める
   var flatten = Array.prototype.concat.apply([], meshArray);
-  var max = Math.max.apply(null, flatten);
-  var min = Math.min.apply(null, flatten);
+  var max = flatten[0];
+  var min = max;
+  for (var i = 0; i < flatten.length; i++){
+    if (max < flatten[i]) max = flatten[i];
+    else if (min > flatten[i]) min = flatten[i];
+  }
   console.log(min + " " + max);
 
 	var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -20,7 +24,6 @@ function drawArrayToCanvas(meshArray){
 		for (var x = 0; x < width; ++x) {
 			var base = (y * width + x) * 4;
       var value = meshArray[y][x];
-      //Yn=B+(A-B)*(Xn-Xmin)/(Xmax-Xmin)
       // 0-255 に正規化
       var norm = 255 * (value - min)/(max - min);
 
