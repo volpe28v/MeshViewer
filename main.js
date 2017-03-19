@@ -109,13 +109,10 @@ function onClick(e) {
 }
 
 function view_map(lati, longi) {
-  var url1 = "http://maps.google.co.jp/maps?";
-  var url2 = "&z=7&output=embed";
-
-  var query = "q=" + lati + "," + longi;
-
-  //地図表示
-  document.getElementById("mapfield").src = url1 + query + url2;
+  var latlng = new google.maps.LatLng(lati, longi);
+  map.panTo(latlng);
+  marker.setMap(map);
+  marker.setPosition(latlng);
 }
 
 // const
@@ -136,3 +133,14 @@ var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
 
+var latlng = new google.maps.LatLng(38.65, 138.25);
+var opts = {
+  zoom: 5,
+  center: latlng,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
+
+var marker = new google.maps.Marker({
+  position: latlng,
+});
