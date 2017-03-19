@@ -2,119 +2,146 @@
 <html>
   <head>
     <title>MeshViewer</title>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
+    <style>
+
+#info_area {
+  width: 300px;
+}
+
+#drop_zone {
+  width: 481px;
+  height: 505px;
+  background-color:#eee;
+  text-align:center;
+}
+
+#drop_msg {
+  padding-top: 20px;
+}
 
 #mycanvas {
-  margin:5px;
+  display: none;
   background-color:#eee;
   text-align:center;
   vertical-align: middle;
   cursor: pointer;
 }
 
-</style>
+    </style>
   </head>
   <body>
-    <div>ここにMSMデータの csv ファイルをドロップしてください</div>
     <table>
       <tr>
         <td valign="top">
-          <div id="drop_zone">
-            <canvas id="mycanvas" width="481" height="505"></canvas>
-          </div>
+          <div id="info_area">
+            <h4>MSM予報雨量を確認する</h4>
+            <h5>マウスカーソル位置の情報</h5>
+            <table>
+              <tr><td>座標</td><td><span id="pos"></span></td></tr>
+              <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+              <tr><td>降水量</td><td><span id="value"></span></td></tr>
+            </table>
 
-          <table>
-            <tr><td>座標</td><td><span id="pos"></span></td></tr>
-            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-            <tr><td>降水量</td><td><span id="value"></span></td></tr>
-          </table>
-          <div id="lati"></div>
-          <div id="value"></div>
-          <div id="file_name"></div>
+            <h5>クリック時の情報</h5>
+            <table>
+              <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
+              <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
+              <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
+            </table>
+          </div>
         </td>
         <td valign="top">
-          <iframe id="mapfield" src="http://maps.google.co.jp/maps?q=43.0645,141.352634&z=7&output=embed" width="481" height="505"></iframe>
+          <div id="drop_zone">
+            <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
+            <canvas id="mycanvas" width="481" height="505"></canvas>
+          </div>
+        </td>
+        <td valign="top">
+          <div id="map_canvas" style="width:481px; height:505px"></div>
         </td>
 
     <script type="text/javascript">
 function drawArrayToCanvas(meshArray){
-	//console.log(meshArray);
-	canvas.width = meshArray[0].length;
-	canvas.height = meshArray.length;
+  //console.log(meshArray);
+  canvas.width = meshArray[0].length;
+  canvas.height = meshArray.length;
 
-	// 最大値,最小値を求める
-	var flatten = Array.prototype.concat.apply([], meshArray);
-	var max = flatten[0];
-	var min = max;
-	for (var i = 0; i < flatten.length; i++){
-		if (max < flatten[i]) max = flatten[i];
-		else if (min > flatten[i]) min = flatten[i];
-	}
-	//console.log(min + " " + max);
+  // 最大値,最小値を求める
+  var flatten = Array.prototype.concat.apply([], meshArray);
+  var max = flatten[0];
+  var min = max;
+  for (var i = 0; i < flatten.length; i++){
+    if (max < flatten[i]) max = flatten[i];
+    else if (min > flatten[i]) min = flatten[i];
+  }
+  //console.log(min + " " + max);
 
-	var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-	var width = imageData.width, height = imageData.height;
-	var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
+  var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  var width = imageData.width, height = imageData.height;
+  var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
 
-	for (var y = 0; y < height; ++y) {
-		for (var x = 0; x < width; ++x) {
-			var base = (y * width + x) * 4;
-			var value = meshArray[y][x];
-			// 0-255 に正規化
-			var norm = 255 * (value - min)/(max - min);
+  for (var y = 0; y < height; ++y) {
+    for (var x = 0; x < width; ++x) {
+      var base = (y * width + x) * 4;
+      var value = meshArray[y][x];
+      // 255-0 に正規化
+      var norm = 255 - (255 * (value - min)/(max - min));
 
-			pixels[base + 0] = norm;
-			pixels[base + 1] = norm;
-			pixels[base + 2] = norm;
-			pixels[base + 3] = 255;
-		}
-	}
-	context.putImageData(imageData, 0, 0);
+      pixels[base + 0] = norm;
+      pixels[base + 1] = norm;
+      pixels[base + 2] = norm;
+      pixels[base + 3] = 255;
+    }
+  }
+
+  canvas.style.display = "block";
+  document.getElementById('drop_msg').style.display = "none";
+  context.putImageData(imageData, 0, 0);
 }
 
 var meshArray = null;
 
 function handleFileSelect(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
+  evt.stopPropagation();
+  evt.preventDefault();
 
-	var files = evt.dataTransfer.files; // FileList object.
-	var f = files[0];
-	var file_name = escape(f.name);
-	document.getElementById('file_name').innerHTML = file_name;
+  var files = evt.dataTransfer.files; // FileList object.
+  var f = files[0];
+  var file_name = escape(f.name);
+  //document.getElementById('file_name').innerHTML = file_name;
 
+  var reader = new FileReader();
+  reader.onload = (function(theFile) {
+    return function(e) {
+      //console.log(reader.result);
+      // csvファイルの中身を配列に
+      meshArray = convertCsvToArray(reader.result);
+      drawArrayToCanvas(meshArray);
+    };
+  })(f);
 
-	var reader = new FileReader();
-	reader.onload = (function(theFile) {
-		return function(e) {
-			//console.log(reader.result);
-			// csvファイルの中身を配列に
-			meshArray = convertCsvToArray(reader.result);
-			drawArrayToCanvas(meshArray);
-		};
-	})(f);
-
-	reader.readAsText(f);
+  reader.readAsText(f);
 }
 
 function convertCsvToArray(csvText){
-	return csvText.split('\n')
-		.filter(function(line){
-			return line != "";
-		})
-		.map(function(line){
-			return line.split(',').filter(function(elem){
-				return elem != "";
-			});
-		});
+  return csvText.split('\n')
+    .filter(function(line){
+      return line != "";
+    })
+    .map(function(line){
+      return line.split(',').filter(function(elem){
+        return elem != "";
+      });
+    });
 }
 
 function handleDragOver(evt) {
-	evt.stopPropagation();
-	evt.preventDefault();
-	evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  evt.stopPropagation();
+  evt.preventDefault();
+  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
 function onMouseOver(e) {
@@ -123,37 +150,36 @@ function onMouseOver(e) {
 function onMouseOut(e) {
 }
 
-var latitude;
-var longitude;
 function onMouseMove(e) {
-	if (meshArray == null) return;
+  if (meshArray == null) return;
 
-	var rect = e.target.getBoundingClientRect();
-	x = e.clientX - rect.left;
-	y = e.clientY - rect.top;
+  var rect = e.target.getBoundingClientRect();
+  x = e.clientX - rect.left;
+  y = e.clientY - rect.top;
 
-	latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
-	longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
+  latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
+  longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
 
-	var value = meshArray[y][x];
-	document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
-	document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
-	document.getElementById('value').innerHTML = value + " mm";
+  value = meshArray[y][x];
+  document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
+  document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+  document.getElementById('value').innerHTML = value + " mm";
 }
 
 function onClick(e) {
-	if (meshArray == null) return;
+  if (meshArray == null) return;
   view_map(latitude, longitude);
+
+  document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
+  document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+  document.getElementById('click_value').innerHTML = value + " mm";
 }
 
 function view_map(lati, longi) {
-	var url1 = "http://maps.google.co.jp/maps?";
-	var url2 = "&z=7&output=embed";
-
-  var query = "q=" + lati + "," + longi;
-
-	//地図表示
-	document.getElementById("mapfield").src = url1 + query + url2;
+  var latlng = new google.maps.LatLng(lati, longi);
+  map.panTo(latlng);
+  marker.setMap(map);
+  marker.setPosition(latlng);
 }
 
 // const
@@ -162,7 +188,14 @@ var startLongitude = 120;
 var widthLatitude  = 0.0625;
 var widthLongitude = 0.05;
 
+// グローバル
+var x,y;
+var latitude;
+var longitude;
+var value;
+
 // main
+// canvas 作成
 var canvas = document.getElementById('mycanvas');
 var context = canvas.getContext('2d');
 canvas.addEventListener('mouseover', onMouseOver, false);
@@ -170,11 +203,23 @@ canvas.addEventListener('mouseout', onMouseOut, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
 canvas.addEventListener('click', onClick, false);
 
+// ドロップゾーン作成
 var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
 
+// GoogleMap 設定
+var latlng = new google.maps.LatLng(38.65, 138.25);
+var opts = {
+  zoom: 5,
+  center: latlng,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
 
+var marker = new google.maps.Marker({
+  position: latlng,
+});
     </script>
   </body>
 </html>
