@@ -6,6 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+
+#info_area {
+  width: 300px;
+}
+
 #drop_zone {
   width: 481px;
   height: 505px;
@@ -31,19 +36,28 @@
     <table>
       <tr>
         <td valign="top">
+          <div id="info_area">
+            <h4>MSM予報雨量を確認する</h4>
+            <h5>マウスカーソル位置の情報</h5>
+            <table>
+              <tr><td>座標</td><td><span id="pos"></span></td></tr>
+              <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+              <tr><td>降水量</td><td><span id="value"></span></td></tr>
+            </table>
+
+            <h5>クリック時の情報</h5>
+            <table>
+              <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
+              <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
+              <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
+            </table>
+          </div>
+        </td>
+        <td valign="top">
           <div id="drop_zone">
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
             <canvas id="mycanvas" width="481" height="505"></canvas>
           </div>
-
-          <table>
-            <tr><td>座標</td><td><span id="pos"></span></td></tr>
-            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-            <tr><td>降水量</td><td><span id="value"></span></td></tr>
-          </table>
-          <div id="lati"></div>
-          <div id="value"></div>
-          <div id="file_name"></div>
         </td>
         <td valign="top">
           <div id="map_canvas" style="width:481px; height:505px"></div>

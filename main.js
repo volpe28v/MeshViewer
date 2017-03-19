@@ -45,8 +45,7 @@ function handleFileSelect(evt) {
   var files = evt.dataTransfer.files; // FileList object.
   var f = files[0];
   var file_name = escape(f.name);
-  document.getElementById('file_name').innerHTML = file_name;
-
+  //document.getElementById('file_name').innerHTML = file_name;
 
   var reader = new FileReader();
   reader.onload = (function(theFile) {
@@ -85,8 +84,6 @@ function onMouseOver(e) {
 function onMouseOut(e) {
 }
 
-var latitude;
-var longitude;
 function onMouseMove(e) {
   if (meshArray == null) return;
 
@@ -97,7 +94,7 @@ function onMouseMove(e) {
   latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
   longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
 
-  var value = meshArray[y][x];
+  value = meshArray[y][x];
   document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
   document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
   document.getElementById('value').innerHTML = value + " mm";
@@ -106,6 +103,10 @@ function onMouseMove(e) {
 function onClick(e) {
   if (meshArray == null) return;
   view_map(latitude, longitude);
+
+  document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
+  document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+  document.getElementById('click_value').innerHTML = value + " mm";
 }
 
 function view_map(lati, longi) {
@@ -121,7 +122,14 @@ var startLongitude = 120;
 var widthLatitude  = 0.0625;
 var widthLongitude = 0.05;
 
+// グローバル
+var x,y;
+var latitude;
+var longitude;
+var value;
+
 // main
+// canvas 作成
 var canvas = document.getElementById('mycanvas');
 var context = canvas.getContext('2d');
 canvas.addEventListener('mouseover', onMouseOver, false);
@@ -129,10 +137,12 @@ canvas.addEventListener('mouseout', onMouseOut, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
 canvas.addEventListener('click', onClick, false);
 
+// ドロップゾーン作成
 var dropZone = document.getElementById('drop_zone');
 dropZone.addEventListener('dragover', handleDragOver, false);
 dropZone.addEventListener('drop', handleFileSelect, false);
 
+// GoogleMap 設定
 var latlng = new google.maps.LatLng(38.65, 138.25);
 var opts = {
   zoom: 5,
