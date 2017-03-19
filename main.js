@@ -21,8 +21,8 @@ function drawArrayToCanvas(meshArray){
 		for (var x = 0; x < width; ++x) {
 			var base = (y * width + x) * 4;
 			var value = meshArray[y][x];
-			// 0-255 に正規化
-			var norm = 255 * (value - min)/(max - min);
+			// 255-0 に正規化
+			var norm = 255 - (255 * (value - min)/(max - min));
 
 			pixels[base + 0] = norm;
 			pixels[base + 1] = norm;
