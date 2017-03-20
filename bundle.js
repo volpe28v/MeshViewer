@@ -1,1 +1,318 @@
-function drawArrayToCanvas(a){canvas.width=a[0].length,canvas.height=a.length;for(var b=20,c=0,d=Array.prototype.concat.apply([],a),e=0;e<d.length;e++)b<d[e]?b=d[e]:c>d[e]&&(c=d[e]);for(var f=context.getImageData(0,0,canvas.width,canvas.height),g=f.width,h=f.height,i=f.data,j=[],k=0;k<h;++k)for(var l=0;l<g;++l){var m=4*(k*g+l),n=a[k][l],o=255*(n-c)/(b-c),p=255-o;i[m+0]=p,i[m+1]=p,i[m+2]=p,i[m+3]=255;var q=startLatitude-k*widthLongitude,r=startLongitude+l*widthLatitude;0!=o&&j.push({location:new google.maps.LatLng(q,r),weight:o})}canvas.style.display="block",document.getElementById("drop_msg").style.display="none",context.putImageData(f,0,0),null!=heatmap&&heatmap.setMap(null),heatmap=new google.maps.visualization.HeatmapLayer({data:j,radius:10,maxIntensity:255,opacity:.4}),heatmap.setMap(map)}function handleFileSelect(a){a.stopPropagation(),a.preventDefault();var b=a.dataTransfer.files,c=b[0],d=(escape(c.name),new FileReader);d.onload=function(a){return function(a){meshArray=convertCsvToArray(d.result),drawArrayToCanvas(meshArray)}}(),d.readAsText(c)}function convertCsvToArray(a){return a.split("\n").filter(function(a){return""!=a}).map(function(a){return a.split(",").filter(function(a){return""!=a})})}function handleDragOver(a){a.stopPropagation(),a.preventDefault(),a.dataTransfer.dropEffect="copy"}function onMouseOver(a){}function onMouseOut(a){}function onMouseMove(a){if(null!=meshArray){var b=a.target.getBoundingClientRect();x=a.clientX-b.left,y=a.clientY-b.top,latitude=Math.round(1e4*(startLatitude-y*widthLongitude),4)/1e4,longitude=Math.round(1e4*(startLongitude+x*widthLatitude),4)/1e4,value=meshArray[y][x],document.getElementById("pos").innerHTML="("+x+" , "+y+")",document.getElementById("lati").innerHTML="("+latitude+" , "+longitude+")",document.getElementById("value").innerHTML=value+" mm",document.getElementById("v_m1m1").innerHTML=meshArray[y-1][x-1],document.getElementById("v_0m1").innerHTML=meshArray[y-1][x],document.getElementById("v_p1m1").innerHTML=meshArray[y-1][x+1],document.getElementById("v_m10").innerHTML=meshArray[y][x-1],document.getElementById("v_00").innerHTML=meshArray[y][x],document.getElementById("v_p10").innerHTML=meshArray[y][x+1],document.getElementById("v_m1p1").innerHTML=meshArray[y+1][x-1],document.getElementById("v_0p1").innerHTML=meshArray[y+1][x],document.getElementById("v_p1p1").innerHTML=meshArray[y+1][x+1]}}function onClick(a){null!=meshArray&&(view_map(latitude,longitude),document.getElementById("click_pos").innerHTML="("+x+" , "+y+")",document.getElementById("click_lati").innerHTML="("+latitude+" , "+longitude+")",document.getElementById("click_value").innerHTML=value+" mm")}function view_map(a,b){var c=new google.maps.LatLng(a,b);map.panTo(c),marker.setMap(map),marker.setPosition(c)}var meshArray=null,startLatitude=46.7,startLongitude=120,widthLatitude=.0625,widthLongitude=.05,x,y,latitude,longitude,value,canvas=document.getElementById("mycanvas"),context=canvas.getContext("2d");canvas.addEventListener("mouseover",onMouseOver,!1),canvas.addEventListener("mouseout",onMouseOut,!1),canvas.addEventListener("mousemove",onMouseMove,!1),canvas.addEventListener("click",onClick,!1);var dropZone=document.getElementById("drop_zone");dropZone.addEventListener("dragover",handleDragOver,!1),dropZone.addEventListener("drop",handleFileSelect,!1);var latlng=new google.maps.LatLng(38.65,138.25),opts={zoom:5,center:latlng,mapTypeId:google.maps.MapTypeId.ROADMAP},map=new google.maps.Map(document.getElementById("map_canvas"),opts),marker=new google.maps.Marker({position:latlng}),heatmap=null;
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+function GoogleMap(params){
+  var self = this;
+
+  self.params = params;
+  var latlng = new google.maps.LatLng(38.65, 138.25);
+  var opts = {
+    zoom: 5,
+    center: latlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  self.map = new google.maps.Map(document.getElementById(params.id), opts);
+
+  self.marker = new google.maps.Marker({
+    position: latlng,
+  });
+  self.heatmap = null;
+
+
+  self.setHearMap = function(meshArray){
+    // 最大値,最小値を求める
+    var max = 20; // デフォルト値
+    var min = 0;  // デフォルト値
+    var flatten = Array.prototype.concat.apply([], meshArray);
+    for (var i = 0; i < flatten.length; i++){
+      if (max < flatten[i]) max = flatten[i];
+      else if (min > flatten[i]) min = flatten[i];
+    }
+
+    var width = meshArray[0].length;
+    var height = meshArray.length;
+
+    var heatMapData = [];
+    for (var y = 0; y < height; ++y) {
+      for (var x = 0; x < width; ++x) {
+        var base = (y * width + x) * 4;
+        var value = meshArray[y][x];
+        var norm_raw = 255 * (value - min)/(max - min);
+
+        var lati = params.mapInfo.startLatitude - (y * params.mapInfo.widthLongitude);
+        var longi = params.mapInfo.startLongitude + (x * params.mapInfo.widthLatitude);
+
+        if (norm_raw != 0){
+          heatMapData.push({location: new google.maps.LatLng(lati, longi), weight: norm_raw});
+        }
+      }
+    }
+
+    if (self.heatmap != null){ self.heatmap.setMap(null); }
+
+    self.heatmap = new google.maps.visualization.HeatmapLayer({
+      data: heatMapData,
+      radius: 10,
+      maxIntensity: 255,
+      opacity: 0.4
+    });
+    self.heatmap.setMap(self.map);
+  }
+
+  self.setMarker = function(lati, longi) {
+    var latlng = new google.maps.LatLng(lati, longi);
+    self.map.panTo(latlng);
+    self.marker.setMap(self.map);
+    self.marker.setPosition(latlng);
+  }
+
+
+};
+
+module.exports = GoogleMap;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  startLatitude: 46.7,
+  startLongitude: 120,
+  widthLatitude: 0.0625,
+  widthLongitude: 0.05,
+};
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var GoogleMap = __webpack_require__(0);
+var mapInfo = __webpack_require__(1);
+
+var googleMap = new GoogleMap({id: "map_canvas", mapInfo: mapInfo});
+
+function drawArrayToCanvas(meshArray){
+  canvas.width = meshArray[0].length;
+  canvas.height = meshArray.length;
+
+  // 最大値,最小値を求める
+  var max = 20; // デフォルト値
+  var min = 0;  // デフォルト値
+  var flatten = Array.prototype.concat.apply([], meshArray);
+  for (var i = 0; i < flatten.length; i++){
+    if (max < flatten[i]) max = flatten[i];
+    else if (min > flatten[i]) min = flatten[i];
+  }
+
+  var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  var width = imageData.width, height = imageData.height;
+  var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
+
+  for (var y = 0; y < height; ++y) {
+    for (var x = 0; x < width; ++x) {
+      var base = (y * width + x) * 4;
+      var value = meshArray[y][x];
+      // 255-0 に正規化
+      var norm_raw = 255 * (value - min)/(max - min);
+      var norm = 255 - norm_raw;
+
+      pixels[base + 0] = norm;
+      pixels[base + 1] = norm;
+      pixels[base + 2] = norm;
+      pixels[base + 3] = 255;
+    }
+  }
+
+  canvas.style.display = "block";
+  document.getElementById('drop_msg').style.display = "none";
+  context.putImageData(imageData, 0, 0);
+}
+
+
+function handleFileSelect(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+
+  var files = evt.dataTransfer.files; // FileList object.
+  var f = files[0];
+  var file_name = escape(f.name);
+  //document.getElementById('file_name').innerHTML = file_name;
+
+  var reader = new FileReader();
+  reader.onload = (function(theFile) {
+    return function(e) {
+      //console.log(reader.result);
+      // csvファイルの中身を配列に
+      meshArray = convertCsvToArray(reader.result);
+
+      drawArrayToCanvas(meshArray);
+      googleMap.setHearMap(meshArray);
+    };
+  })(f);
+
+  reader.readAsText(f);
+}
+
+function convertCsvToArray(csvText){
+  return csvText.split('\n')
+    .filter(function(line){
+      return line != "";
+    })
+    .map(function(line){
+      return line.split(',').filter(function(elem){
+        return elem != "";
+      });
+    });
+}
+
+function handleDragOver(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+function onMouseOver(e) {
+}
+
+function onMouseOut(e) {
+}
+
+function onMouseMove(e) {
+  if (meshArray == null) return;
+
+  var rect = e.target.getBoundingClientRect();
+  x = e.clientX - rect.left;
+  y = e.clientY - rect.top;
+
+  latitude = Math.round((startLatitude - (y * widthLongitude))*10000, 4)/10000;
+  longitude = Math.round((startLongitude + (x * widthLatitude))*10000, 4)/10000;
+
+  value = meshArray[y][x];
+  document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
+  document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+  document.getElementById('value').innerHTML = value + " mm";
+
+  // 周辺の値
+  document.getElementById('v_m1m1').innerHTML = meshArray[y-1][x-1];
+  document.getElementById('v_0m1').innerHTML = meshArray[y-1][x];
+  document.getElementById('v_p1m1').innerHTML = meshArray[y-1][x+1];
+  document.getElementById('v_m10').innerHTML = meshArray[y][x-1];
+  document.getElementById('v_00').innerHTML = meshArray[y][x];
+  document.getElementById('v_p10').innerHTML = meshArray[y][x+1];
+  document.getElementById('v_m1p1').innerHTML = meshArray[y+1][x-1];
+  document.getElementById('v_0p1').innerHTML = meshArray[y+1][x];
+  document.getElementById('v_p1p1').innerHTML = meshArray[y+1][x+1];
+}
+
+function onClick(e) {
+  if (meshArray == null) return;
+  googleMap.setMarker(latitude, longitude);
+
+  document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
+  document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+  document.getElementById('click_value').innerHTML = value + " mm";
+}
+
+// const
+var startLatitude  = 46.7;
+var startLongitude = 120;
+var widthLatitude  = 0.0625;
+var widthLongitude = 0.05;
+
+// グローバル
+var x,y;
+var latitude;
+var longitude;
+var value;
+var meshArray = null;
+
+// main
+// canvas 作成
+var canvas = document.getElementById('mycanvas');
+var context = canvas.getContext('2d');
+canvas.addEventListener('mouseover', onMouseOver, false);
+canvas.addEventListener('mouseout', onMouseOut, false);
+canvas.addEventListener('mousemove', onMouseMove, false);
+canvas.addEventListener('click', onClick, false);
+
+// ドロップゾーン作成
+var dropZone = document.getElementById('drop_zone');
+dropZone.addEventListener('dragover', handleDragOver, false);
+dropZone.addEventListener('drop', handleFileSelect, false);
+
+
+
+/***/ })
+/******/ ]);
