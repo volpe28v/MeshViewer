@@ -1,0 +1,26 @@
+{
+  "name": "meshviewer",
+  "version": "1.0.0",
+  "description": "メッシュデータを可視化する html",
+  "main": "main.js",
+  "dependencies": {
+    "grunt-contrib-uglify": "^2.2.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^2.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/volpe28v/MeshViewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/volpe28v/MeshViewer/issues"
+  },
+  "homepage": "https://github.com/volpe28v/MeshViewer#readme"
+}

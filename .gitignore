@@ -1,2 +1,4 @@
 *.swp
 mesh.csv
+
+node_modules

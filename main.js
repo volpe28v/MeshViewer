@@ -55,7 +55,6 @@ function drawArrayToCanvas(meshArray){
   heatmap.setMap(map);
 }
 
-var meshArray = null;
 
 function handleFileSelect(evt) {
   evt.stopPropagation();
@@ -157,6 +156,7 @@ var x,y;
 var latitude;
 var longitude;
 var value;
+var meshArray = null;
 
 // main
 // canvas 作成
