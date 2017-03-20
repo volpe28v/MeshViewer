@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           // 出力ファイル: 元ファイル
-          'bundle.js': 'main.js'
+          'bundle.min.js': 'bundle.js'
         }
       }
     },
