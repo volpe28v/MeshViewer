@@ -17,7 +17,9 @@ function GoogleMap(params){
   self.heatmap = null;
 
 
-  self.setHearMap = function(meshArray){
+  self.setHeartMap = function(mesh){
+    var meshArray = mesh.meshArray;
+
     // 最大値,最小値を求める
     var max = 20; // デフォルト値
     var min = 0;  // デフォルト値
@@ -57,14 +59,12 @@ function GoogleMap(params){
     self.heatmap.setMap(self.map);
   }
 
-  self.setMarker = function(lati, longi) {
-    var latlng = new google.maps.LatLng(lati, longi);
+  self.setMarker = function(params) {
+    var latlng = new google.maps.LatLng(params.latitude, params.longitude);
     self.map.panTo(latlng);
     self.marker.setMap(self.map);
     self.marker.setPosition(latlng);
   }
-
-
 };
 
 module.exports = GoogleMap;
