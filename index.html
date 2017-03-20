@@ -2,13 +2,22 @@
 <html>
   <head>
     <title>MeshViewer</title>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyD06ErexK0u1vnaXGci0_JuuwCm2jkN36s&sensor=false"></script>
+    <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD06ErexK0u1vnaXGci0_JuuwCm2jkN36s&libraries=visualization&sensor=false"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
 
 #info_area {
   width: 300px;
+}
+
+.title, .title2{
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.title2 {
+  margin-top: 30px;
 }
 
 #drop_zone {
@@ -30,6 +39,18 @@
   cursor: pointer;
 }
 
+#around {
+  border-collapse: collapse;
+}
+
+#around td {
+  border: solid 1px #aaa;
+  margin: 0;
+  width: 40px;
+  text-align: right;
+  font-size: 8px;
+
+}
     </style>
   </head>
   <body>
@@ -38,14 +59,20 @@
         <td valign="top">
           <div id="info_area">
             <h4>MSM予報雨量を確認する</h4>
-            <h5>マウスカーソル位置の情報</h5>
+            <div class="title">マウスカーソル位置の情報</div>
             <table>
               <tr><td>座標</td><td><span id="pos"></span></td></tr>
               <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
               <tr><td>降水量</td><td><span id="value"></span></td></tr>
             </table>
 
-            <h5>クリック時の情報</h5>
+            <table id="around">
+              <tr><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td></tr>
+              <tr><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td></tr>
+              <tr><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td></tr>
+            </table>
+
+            <div class="title2">クリック時の情報</div>
             <table>
               <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
               <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
@@ -62,7 +89,8 @@
         <td valign="top">
           <div id="map_canvas" style="width:481px; height:505px"></div>
         </td>
-
+      </tr>
+    </table>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

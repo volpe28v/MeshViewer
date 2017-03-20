@@ -4,9 +4,9 @@ function drawArrayToCanvas(meshArray){
   canvas.height = meshArray.length;
 
   // 最大値,最小値を求める
+  var max = 20; // デフォルト値
+  var min = 0;  // デフォルト値
   var flatten = Array.prototype.concat.apply([], meshArray);
-  var max = flatten[0];
-  var min = max;
   for (var i = 0; i < flatten.length; i++){
     if (max < flatten[i]) max = flatten[i];
     else if (min > flatten[i]) min = flatten[i];
@@ -17,23 +17,42 @@ function drawArrayToCanvas(meshArray){
   var width = imageData.width, height = imageData.height;
   var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
 
+  var heatMapData = [];
   for (var y = 0; y < height; ++y) {
     for (var x = 0; x < width; ++x) {
       var base = (y * width + x) * 4;
       var value = meshArray[y][x];
       // 255-0 に正規化
-      var norm = 255 - (255 * (value - min)/(max - min));
+      var norm_raw = 255 * (value - min)/(max - min);
+      var norm = 255 - norm_raw;
 
       pixels[base + 0] = norm;
       pixels[base + 1] = norm;
       pixels[base + 2] = norm;
       pixels[base + 3] = 255;
+
+      var lati = startLatitude - (y * widthLongitude);
+      var longi = startLongitude + (x * widthLatitude);
+
+      if (norm_raw != 0){
+        heatMapData.push({location: new google.maps.LatLng(lati, longi), weight: norm_raw});
+      }
     }
   }
 
   canvas.style.display = "block";
   document.getElementById('drop_msg').style.display = "none";
   context.putImageData(imageData, 0, 0);
+
+  if (heatmap != null){ heatmap.setMap(null); }
+
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatMapData,
+    radius: 10,
+    maxIntensity: 255,
+    opacity: 0.4
+  });
+  heatmap.setMap(map);
 }
 
 var meshArray = null;
@@ -98,6 +117,17 @@ function onMouseMove(e) {
   document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
   document.getElementById('lati').innerHTML = "(" + latitude + " , " + longitude + ")";
   document.getElementById('value').innerHTML = value + " mm";
+
+  // 周辺の値
+  document.getElementById('v_m1m1').innerHTML = meshArray[y-1][x-1];
+  document.getElementById('v_0m1').innerHTML = meshArray[y-1][x];
+  document.getElementById('v_p1m1').innerHTML = meshArray[y-1][x+1];
+  document.getElementById('v_m10').innerHTML = meshArray[y][x-1];
+  document.getElementById('v_00').innerHTML = meshArray[y][x];
+  document.getElementById('v_p10').innerHTML = meshArray[y][x+1];
+  document.getElementById('v_m1p1').innerHTML = meshArray[y+1][x-1];
+  document.getElementById('v_0p1').innerHTML = meshArray[y+1][x];
+  document.getElementById('v_p1p1').innerHTML = meshArray[y+1][x+1];
 }
 
 function onClick(e) {
@@ -154,3 +184,4 @@ var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
 var marker = new google.maps.Marker({
   position: latlng,
 });
+var heatmap = null;
