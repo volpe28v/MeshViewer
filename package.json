@@ -4,11 +4,8 @@
   "description": "メッシュデータを可視化する html",
   "main": "main.js",
   "dependencies": {
-    "grunt-contrib-uglify": "^2.2.0"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-uglify": "^2.2.0",
     "webpack": "^2.2.1"
   },
   "scripts": {
