@@ -33,7 +33,8 @@ var meshCollection = new MeshCollection(
     ],
     changeActiveMeshHandlers: [
       canvas.drawMesh,
-      googleMap.setHeartMap
+      googleMap.setHeartMap,
+      fileList.updateActive
     ]
   });
 
@@ -44,3 +45,12 @@ var dropZone = new DropZone(
       meshCollection.add
     ]
   });
+
+window.onload = function () {
+  document.getElementById("pre_mesh").onclick = function(){
+    meshCollection.pre();
+  };
+  document.getElementById("next_mesh").onclick = function(){
+    meshCollection.next();
+  };
+}
