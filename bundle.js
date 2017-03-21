@@ -94,7 +94,7 @@ function Canvas(params){
     self.canvas.height = meshArray.length;
 
     // 最大値,最小値を求める
-    var max = 20; // デフォルト値
+    var max = 10; // デフォルト値
     var min = 0;  // デフォルト値
     var flatten = Array.prototype.concat.apply([], meshArray);
     for (var i = 0; i < flatten.length; i++){
