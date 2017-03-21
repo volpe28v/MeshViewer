@@ -16,10 +16,6 @@
   font-size: 14px;
 }
 
-.title2 {
-  margin-top: 30px;
-}
-
 #drop_zone {
   width: 481px;
   height: 505px;
@@ -49,8 +45,16 @@
   width: 60px;
   text-align: right;
   font-size: 8px;
-
 }
+
+#file_name {
+  font-size: 14px;
+}
+
+#file_list {
+  font-size: 12px;
+}
+
     </style>
   </head>
   <body>
@@ -59,25 +63,8 @@
         <td valign="top">
           <div id="info_area">
             <h4>MSM予報雨量を確認する</h4>
-            <div class="title">マウスカーソル位置の情報</div>
-            <table>
-              <tr><td>座標</td><td><span id="pos"></span></td></tr>
-              <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-              <tr><td>降水量</td><td><span id="value"></span></td></tr>
-            </table>
-
-            <table id="around">
-              <tr><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td></tr>
-              <tr><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td></tr>
-              <tr><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td></tr>
-            </table>
-
-            <div class="title2">クリック時の情報</div>
-            <table>
-              <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
-              <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
-              <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
-            </table>
+            <div id="file_name"></div>
+            <ul id="file_list"></ul>
           </div>
         </td>
         <td valign="top">
@@ -85,9 +72,27 @@
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
             <canvas id="mycanvas" width="481" height="505"></canvas>
           </div>
+
+          <table>
+            <tr><td>座標</td><td><span id="pos"></span></td></tr>
+            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
+            <tr><td>降水量</td><td><span id="value"></span></td></tr>
+          </table>
+
+          <table id="around">
+            <tr><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td></tr>
+            <tr><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td></tr>
+            <tr><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td></tr>
+          </table>
         </td>
         <td valign="top">
           <div id="map_canvas" style="width:481px; height:505px"></div>
+
+          <table>
+            <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
+            <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
+            <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
+          </table>
         </td>
       </tr>
     </table>

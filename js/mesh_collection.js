@@ -7,14 +7,22 @@ function MeshCollection(params){
 
   self.add = function(mesh){
     self.meshes.push(mesh);
+    self.meshes.sort(function(a,b){
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
+    });
+ 
+    self.params.changeCollectionHandlers.forEach(function(handler){
+      handler(self.meshes);
+    });
+
     if (self.active == null){
       self.active = mesh;
-      params.changeActiveMeshHandlers.forEach(function(handler){
+      self.params.changeActiveMeshHandlers.forEach(function(handler){
         handler(mesh);
       });
     }
-
-    console.log(self.meshes.length);
   }
 }
 

@@ -2,6 +2,7 @@ var GoogleMap = require("./google_map");
 var DropZone = require("./drop_zone");
 var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
+var FileList = require("./file_list");
 var mapInfo = require("./map_info");
 
 var googleMap = new GoogleMap(
@@ -20,8 +21,16 @@ var canvas = new Canvas(
     ]
   });
 
+var fileList = new FileList(
+  {
+    id: "file_list"
+  });
+
 var meshCollection = new MeshCollection(
   {
+    changeCollectionHandlers: [
+      fileList.updateList
+    ],
     changeActiveMeshHandlers: [
       canvas.drawMesh,
       googleMap.setHeartMap
