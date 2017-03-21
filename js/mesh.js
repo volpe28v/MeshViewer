@@ -1,6 +1,7 @@
-function Mesh(csvText){
+function Mesh(name, csvText){
   var self = this;
 
+  self.name = name;
   self.meshArray = convertCsvToArray(csvText);
 
   function convertCsvToArray(csvText){

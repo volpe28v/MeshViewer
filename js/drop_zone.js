@@ -4,7 +4,6 @@ function DropZone(params){
   var self = this;
 
   self.params = params;
-  self.meshes = [];
 
   // ドロップゾーン作成
   var dropZone = document.getElementById(params.id);
@@ -22,25 +21,35 @@ function DropZone(params){
     evt.preventDefault();
 
     var files = evt.dataTransfer.files; // FileList object.
-    var f = files[0];
-    var file_name = escape(f.name);
+    var fileArray = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      fileArray.push(f);
+    }
+    fileArray.sort(function(a,b){
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
+    });
 
-    var reader = new FileReader();
-    reader.onload = (function(theFile) {
-      return function(e) {
-        var mesh = new Mesh(reader.result);
-        self.meshes.push(mesh);
+    for (var i = 0; i < fileArray.length; i++) {
+      var f = fileArray[i];
+      var file_name = escape(f.name);
 
-        params.createMeshHandlers.forEach(function(handler){
-          handler(mesh);
-        });
-      };
-    })(f);
+      var reader = new FileReader();
+      reader.onload = (function(theFile) {
+        var current = i;
+        return function(e) {
+          var mesh = new Mesh(theFile.name, e.target.result);
 
-    reader.readAsText(f);
+          params.createMeshHandlers.forEach(function(handler){
+            handler(mesh);
+          });
+        };
+      })(f);
+
+      reader.readAsText(f);
+    }
   }
-
-
 }
 
 module.exports = DropZone;
