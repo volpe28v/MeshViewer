@@ -48,7 +48,10 @@ function GoogleMap(params){
       }
     }
 
-    if (self.heatmap != null){ self.heatmap.setMap(null); }
+    if (self.heatmap != null){
+      self.heatmap.setMap(null);
+      self.heatmap.setData([]);
+    }
 
     self.heatmap = new google.maps.visualization.HeatmapLayer({
       data: heatMapData,
