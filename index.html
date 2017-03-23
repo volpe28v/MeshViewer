@@ -41,14 +41,14 @@ body {
   cursor: pointer;
 }
 
-#around {
+.around {
   border-collapse: collapse;
 }
 
-#around td {
+.around td {
   border: solid 1px #aaa;
   margin: 0;
-  width: 80px;
+  width: 90px;
   text-align: right;
   font-size: 12px;
 }
@@ -59,6 +59,10 @@ body {
 
 #file_list {
   font-size: 12px;
+}
+
+#v_00, #f_00 {
+  color: yellow;
 }
 
     </style>
@@ -87,10 +91,12 @@ body {
             <tr><td>降水量</td><td><span id="value"></span></td></tr>
           </table>
 
-          <table id="around">
-            <tr><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td></tr>
-            <tr><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td></tr>
-            <tr><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td></tr>
+          <table class="around">
+            <tr><td id="v_m2m2">0</td><td id="v_m1m2">0</td><td id="v_0m2">0</td><td id="v_p1m2">0</td><td id="v_p2m2">0</td></tr>
+            <tr><td id="v_m2m1">0</td><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td><td id="v_p2m1">0</td></tr>
+            <tr><td id="v_m20">0</td><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td><td id="v_p20">0</td></tr>
+            <tr><td id="v_m2p1">0</td><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td><td id="v_p2p1">0</td></tr>
+            <tr><td id="v_m2p2">0</td><td id="v_m1p2">0</td><td id="v_0p2">0</td><td id="v_p1p2">0</td><td id="v_p2p2">0</td></tr>
           </table>
         </td>
         <td valign="top">
@@ -101,6 +107,15 @@ body {
             <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
             <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
           </table>
+
+          <table class="around">
+            <tr><td id="f_m2m2">0</td><td id="f_m1m2">0</td><td id="f_0m2">0</td><td id="f_p1m2">0</td><td id="f_p2m2">0</td></tr>
+            <tr><td id="f_m2m1">0</td><td id="f_m1m1">0</td><td id="f_0m1">0</td><td id="f_p1m1">0</td><td id="f_p2m1">0</td></tr>
+            <tr><td id="f_m20">0</td><td id="f_m10">0</td><td id="f_00">0</td><td id="f_p10">0</td><td id="f_p20">0</td></tr>
+            <tr><td id="f_m2p1">0</td><td id="f_m1p1">0</td><td id="f_0p1">0</td><td id="f_p1p1">0</td><td id="f_p2p1">0</td></tr>
+            <tr><td id="f_m2p2">0</td><td id="f_m1p2">0</td><td id="f_0p2">0</td><td id="f_p1p2">0</td><td id="f_p2p2">0</td></tr>
+          </table>
+ 
         </td>
       </tr>
     </table>

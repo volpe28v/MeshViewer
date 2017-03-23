@@ -8,6 +8,8 @@ function Canvas(params){
   self.mesh = null;
   self.x = 0;
   self.y = 0;
+  self.fix_x = 0;
+  self.fix_y = 0;
 
   self.canvas.addEventListener('mouseover', onMouseOver, false);
   self.canvas.addEventListener('mouseout', onMouseOut, false);
@@ -83,15 +85,36 @@ function Canvas(params){
     document.getElementById('value').innerHTML = meshArray[y][x] + " mm";
 
     // 周辺の値
-    document.getElementById('v_m1m1').innerHTML = meshArray[y-1][x-1];
-    document.getElementById('v_0m1').innerHTML = meshArray[y-1][x];
-    document.getElementById('v_p1m1').innerHTML = meshArray[y-1][x+1];
-    document.getElementById('v_m10').innerHTML = meshArray[y][x-1];
-    document.getElementById('v_00').innerHTML = meshArray[y][x];
-    document.getElementById('v_p10').innerHTML = meshArray[y][x+1];
-    document.getElementById('v_m1p1').innerHTML = meshArray[y+1][x-1];
-    document.getElementById('v_0p1').innerHTML = meshArray[y+1][x];
-    document.getElementById('v_p1p1').innerHTML = meshArray[y+1][x+1];
+    document.getElementById('v_m2m2').innerHTML = getMeshValue(y-2,x-2);
+    document.getElementById('v_m1m2').innerHTML = getMeshValue(y-2,x-1);
+    document.getElementById('v_0m2').innerHTML  = getMeshValue(y-2,x);
+    document.getElementById('v_p1m2').innerHTML = getMeshValue(y-2,x+1);
+    document.getElementById('v_p2m2').innerHTML = getMeshValue(y-2,x+2);
+
+    document.getElementById('v_m2m1').innerHTML = getMeshValue(y-1,x-2);
+    document.getElementById('v_m1m1').innerHTML = getMeshValue(y-1,x-1);
+    document.getElementById('v_0m1').innerHTML  = getMeshValue(y-1,x);
+    document.getElementById('v_p1m1').innerHTML = getMeshValue(y-1,x+1);
+    document.getElementById('v_p2m1').innerHTML = getMeshValue(y-1,x+2);
+
+    document.getElementById('v_m20').innerHTML = getMeshValue(y,x-2);
+    document.getElementById('v_m10').innerHTML = getMeshValue(y,x-1);
+    document.getElementById('v_00').innerHTML  = getMeshValue(y,x);
+    document.getElementById('v_p10').innerHTML = getMeshValue(y,x+1);
+    document.getElementById('v_p20').innerHTML = getMeshValue(y,x+2);
+
+    document.getElementById('v_m2p1').innerHTML = getMeshValue(y+1,x-2);
+    document.getElementById('v_m1p1').innerHTML = getMeshValue(y+1,x-1);
+    document.getElementById('v_0p1').innerHTML  = getMeshValue(y+1,x);
+    document.getElementById('v_p1p1').innerHTML = getMeshValue(y+1,x+1);
+    document.getElementById('v_p2p1').innerHTML = getMeshValue(y+1,x+2);
+    
+    document.getElementById('v_m2p2').innerHTML = getMeshValue(y+2,x-2);
+    document.getElementById('v_m1p2').innerHTML = getMeshValue(y+2,x-1);
+    document.getElementById('v_0p2').innerHTML  = getMeshValue(y+2,x);
+    document.getElementById('v_p1p2').innerHTML = getMeshValue(y+2,x+1);
+    document.getElementById('v_p2p2').innerHTML = getMeshValue(y+2,x+2);
+ 
   }
 
   function onClick(e) {
@@ -121,10 +144,52 @@ function Canvas(params){
     var y = self.fix_y;
     var latitude = calcLatitude(y);
     var longitude = calcLongitude(x);
+    var meshArray = self.mesh.meshArray;
 
     document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
     document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
-    document.getElementById('click_value').innerHTML = self.mesh.meshArray[y][x] + " mm";
+    document.getElementById('click_value').innerHTML = meshArray[y][x] + " mm";
+
+    // 周辺の値
+    document.getElementById('f_m2m2').innerHTML = getMeshValue(y-2,x-2);
+    document.getElementById('f_m1m2').innerHTML = getMeshValue(y-2,x-1);
+    document.getElementById('f_0m2').innerHTML  = getMeshValue(y-2,x);
+    document.getElementById('f_p1m2').innerHTML = getMeshValue(y-2,x+1);
+    document.getElementById('f_p2m2').innerHTML = getMeshValue(y-2,x+2);
+
+    document.getElementById('f_m2m1').innerHTML = getMeshValue(y-1,x-2);
+    document.getElementById('f_m1m1').innerHTML = getMeshValue(y-1,x-1);
+    document.getElementById('f_0m1').innerHTML  = getMeshValue(y-1,x);
+    document.getElementById('f_p1m1').innerHTML = getMeshValue(y-1,x+1);
+    document.getElementById('f_p2m1').innerHTML = getMeshValue(y-1,x+2);
+
+    document.getElementById('f_m20').innerHTML = getMeshValue(y,x-2);
+    document.getElementById('f_m10').innerHTML = getMeshValue(y,x-1);
+    document.getElementById('f_00').innerHTML  = getMeshValue(y,x);
+    document.getElementById('f_p10').innerHTML = getMeshValue(y,x+1);
+    document.getElementById('f_p20').innerHTML = getMeshValue(y,x+2);
+
+    document.getElementById('f_m2p1').innerHTML = getMeshValue(y+1,x-2);
+    document.getElementById('f_m1p1').innerHTML = getMeshValue(y+1,x-1);
+    document.getElementById('f_0p1').innerHTML  = getMeshValue(y+1,x);
+    document.getElementById('f_p1p1').innerHTML = getMeshValue(y+1,x+1);
+    document.getElementById('f_p2p1').innerHTML = getMeshValue(y+1,x+2);
+    
+    document.getElementById('f_m2p2').innerHTML = getMeshValue(y+2,x-2);
+    document.getElementById('f_m1p2').innerHTML = getMeshValue(y+2,x-1);
+    document.getElementById('f_0p2').innerHTML  = getMeshValue(y+2,x);
+    document.getElementById('f_p1p2').innerHTML = getMeshValue(y+2,x+1);
+    document.getElementById('f_p2p2').innerHTML = getMeshValue(y+2,x+2);
+  }
+
+  function getMeshValue(y,x){
+    var meshArray = self.mesh.meshArray;
+
+    if (x < 0 || y < 0 || meshArray[0].length <= x || meshArray.length <= y){
+      return "-";
+    }else{
+      return meshArray[y][x];
+    }
   }
 
   function calcLatitude(y){
