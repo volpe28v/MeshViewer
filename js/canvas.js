@@ -54,6 +54,8 @@ function Canvas(params){
     self.context.putImageData(imageData, 0, 0);
 
     document.getElementById('file_name').innerHTML = mesh.name;
+
+    updateFixedInfo();
   }
 
 
@@ -76,10 +78,9 @@ function Canvas(params){
     self.latitude = Math.round((params.mapInfo.startLatitude - (y * params.mapInfo.widthLongitude))*10000, 4)/10000;
     self.longitude = Math.round((params.mapInfo.startLongitude + (x * params.mapInfo.widthLatitude))*10000, 4)/10000;
 
-    self.value = meshArray[y][x];
     document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
     document.getElementById('lati').innerHTML = "(" + self.latitude + " , " + self.longitude + ")";
-    document.getElementById('value').innerHTML = self.value + " mm";
+    document.getElementById('value').innerHTML = meshArray[y][x] + " mm";
 
     // 周辺の値
     document.getElementById('v_m1m1').innerHTML = meshArray[y-1][x-1];
@@ -95,17 +96,43 @@ function Canvas(params){
 
   function onClick(e) {
     if (self.mesh == null) return;
+
+    var x = self.x;
+    var y = self.y;
+    self.fix_x = x;
+    self.fix_y = y;
+
+    var latitude = calcLatitude(y);
+    var longitude = calcLongitude(x);
+
     self.params.clickHandlers.forEach(function(handler){
       handler({
-        latitude: self.latitude,
-        longitude: self.longitude,
-        value: self.value
+        latitude: latitude,
+        longitude: longitude,
+        value: self.mesh.meshArray[y][x]
       });
     });
 
-    document.getElementById('click_pos').innerHTML = "(" + self.x + " , " + self.y + ")";
-    document.getElementById('click_lati').innerHTML = "(" + self.latitude + " , " + self.longitude + ")";
-    document.getElementById('click_value').innerHTML = self.value + " mm";
+    updateFixedInfo();
+  }
+
+  function updateFixedInfo(){
+    var x = self.fix_x;
+    var y = self.fix_y;
+    var latitude = calcLatitude(y);
+    var longitude = calcLongitude(x);
+
+    document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
+    document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+    document.getElementById('click_value').innerHTML = self.mesh.meshArray[y][x] + " mm";
+  }
+
+  function calcLatitude(y){
+    return Math.round((self.params.mapInfo.startLatitude - (y * self.params.mapInfo.widthLongitude))*10000, 4)/10000;
+  }
+
+  function calcLongitude(x){
+    return Math.round((self.params.mapInfo.startLongitude + (x * self.params.mapInfo.widthLatitude))*10000, 4)/10000;
   }
 }
 
