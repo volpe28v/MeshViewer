@@ -28,10 +28,12 @@ function Canvas(params){
     var min = 0;  // デフォルト値
     var flatten = Array.prototype.concat.apply([], meshArray);
     for (var i = 0; i < flatten.length; i++){
-      if (max < flatten[i]) max = flatten[i];
-      else if (min > flatten[i]) min = flatten[i];
+      if (max < Number(flatten[i])) max = flatten[i];
+      else if (min > Number(flatten[i])) min = flatten[i];
     }
-
+ 
+    self.max = max;
+    self.min = min;
     var imageData = self.context.getImageData(0, 0, self.canvas.width, self.canvas.height);
     var width = imageData.width, height = imageData.height;
     var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
@@ -114,7 +116,25 @@ function Canvas(params){
     document.getElementById('v_0p2').innerHTML  = getMeshValue(y+2,x);
     document.getElementById('v_p1p2').innerHTML = getMeshValue(y+2,x+1);
     document.getElementById('v_p2p2').innerHTML = getMeshValue(y+2,x+2);
- 
+
+    d3.select('svg#latitude_line polyline')
+      .transition()
+      .duration(100)
+      .attr('points', meshArray[y].map(function(d, i) {
+        return i + ' ' + (56 - (50 * (Number(d) - self.min)/(self.max - self.min)));
+      }).join(','));
+
+    var longiArray = [];
+    for( var i = 0; i < meshArray.length; i++){
+      longiArray.push(meshArray[i][x]);
+    }
+
+    d3.select('svg#longitude_line polyline')
+      .transition()
+      .duration(100)
+      .attr('points', longiArray.map(function(d, i) {
+        return (60 - (50 * (Number(d) - self.min)/(self.max - self.min)) + " " + i);
+      }).join(','));
   }
 
   function onClick(e) {

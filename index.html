@@ -3,6 +3,8 @@
   <head>
     <title>MeshViewer</title>
     <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD06ErexK0u1vnaXGci0_JuuwCm2jkN36s&libraries=visualization"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -80,11 +82,19 @@ body {
           </div>
         </td>
         <td valign="top">
+          <svg id="longitude_line" width="60" height="505" style="margin-top: 60px; background: black; display: block;">
+            <polyline stroke="yellow" stroke-width="1" fill="transparent" points=""></polyline>
+          </svg>
+        </td>
+        <td valign="top">
+          <svg id="latitude_line" width="481" height="60" style="background: black; display: block;">
+            <polyline stroke="yellow" stroke-width="1" fill="transparent" points=""></polyline>
+          </svg>
+
           <div id="drop_zone">
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
             <canvas id="mycanvas" width="481" height="505"></canvas>
           </div>
-
           <table>
             <tr><td>座標</td><td><span id="pos"></span></td></tr>
             <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
@@ -100,7 +110,7 @@ body {
           </table>
         </td>
         <td valign="top">
-          <div id="map_canvas" style="width:481px; height:505px"></div>
+          <div id="map_canvas" style="margin-top: 60px; width:481px; height:505px"></div>
 
           <table>
             <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
