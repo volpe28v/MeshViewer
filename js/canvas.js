@@ -6,10 +6,6 @@ function Canvas(params){
   self.context = self.canvas.getContext('2d');
 
   self.mesh = null;
-  self.x = 0;
-  self.y = 0;
-  self.fix_x = 0;
-  self.fix_y = 0;
 
   self.canvas.addEventListener('mouseover', onMouseOver, false);
   self.canvas.addEventListener('mouseout', onMouseOut, false);
@@ -53,8 +49,6 @@ function Canvas(params){
     self.context.putImageData(imageData, 0, 0);
 
     document.getElementById('file_name').innerHTML = mesh.name;
-
-    updateFixedInfo();
   }
 
 
@@ -74,43 +68,6 @@ function Canvas(params){
 
     var x = self.x;
     var y = self.y;
-    self.latitude = Math.round((params.mapInfo.startLatitude - (y * params.mapInfo.widthLongitude))*10000, 4)/10000;
-    self.longitude = Math.round((params.mapInfo.startLongitude + (x * params.mapInfo.widthLatitude))*10000, 4)/10000;
-
-    document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
-    document.getElementById('lati').innerHTML = "(" + self.latitude + " , " + self.longitude + ")";
-    document.getElementById('value').innerHTML = meshArray[y][x] + " mm";
-
-    // 周辺の値
-    document.getElementById('v_m2m2').innerHTML = getMeshValue(y-2,x-2);
-    document.getElementById('v_m1m2').innerHTML = getMeshValue(y-2,x-1);
-    document.getElementById('v_0m2').innerHTML  = getMeshValue(y-2,x);
-    document.getElementById('v_p1m2').innerHTML = getMeshValue(y-2,x+1);
-    document.getElementById('v_p2m2').innerHTML = getMeshValue(y-2,x+2);
-
-    document.getElementById('v_m2m1').innerHTML = getMeshValue(y-1,x-2);
-    document.getElementById('v_m1m1').innerHTML = getMeshValue(y-1,x-1);
-    document.getElementById('v_0m1').innerHTML  = getMeshValue(y-1,x);
-    document.getElementById('v_p1m1').innerHTML = getMeshValue(y-1,x+1);
-    document.getElementById('v_p2m1').innerHTML = getMeshValue(y-1,x+2);
-
-    document.getElementById('v_m20').innerHTML = getMeshValue(y,x-2);
-    document.getElementById('v_m10').innerHTML = getMeshValue(y,x-1);
-    document.getElementById('v_00').innerHTML  = getMeshValue(y,x);
-    document.getElementById('v_p10').innerHTML = getMeshValue(y,x+1);
-    document.getElementById('v_p20').innerHTML = getMeshValue(y,x+2);
-
-    document.getElementById('v_m2p1').innerHTML = getMeshValue(y+1,x-2);
-    document.getElementById('v_m1p1').innerHTML = getMeshValue(y+1,x-1);
-    document.getElementById('v_0p1').innerHTML  = getMeshValue(y+1,x);
-    document.getElementById('v_p1p1').innerHTML = getMeshValue(y+1,x+1);
-    document.getElementById('v_p2p1').innerHTML = getMeshValue(y+1,x+2);
-    
-    document.getElementById('v_m2p2').innerHTML = getMeshValue(y+2,x-2);
-    document.getElementById('v_m1p2').innerHTML = getMeshValue(y+2,x-1);
-    document.getElementById('v_0p2').innerHTML  = getMeshValue(y+2,x);
-    document.getElementById('v_p1p2').innerHTML = getMeshValue(y+2,x+1);
-    document.getElementById('v_p2p2').innerHTML = getMeshValue(y+2,x+2);
 
     var latiScale = d3.scaleLinear()
       .domain([0, self.max])
@@ -134,6 +91,13 @@ function Canvas(params){
       .attr('points', longiArray.map(function(d, i) {
         return longiScale(Number(d)) + " " + i;
       }).join(','));
+
+    self.params.moveHandlers.forEach(function(handler){
+      handler({
+        x: x,
+        y: y
+      });
+    });
   }
 
   function onClick(e) {
@@ -150,51 +114,6 @@ function Canvas(params){
         y: y
       });
     });
-
-    updateFixedInfo();
-  }
-
-  function updateFixedInfo(){
-    var x = self.fix_x;
-    var y = self.fix_y;
-    var lati = self.params.mapInfo.getLatitude(y);
-    var longi = self.params.mapInfo.getLongitude(x);
-    var meshArray = self.mesh.meshArray;
-
-    document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
-    document.getElementById('click_lati').innerHTML = "(" + lati + " , " + longi + ")";
-    document.getElementById('click_value').innerHTML = meshArray[y][x] + " mm";
-
-    // 周辺の値
-    document.getElementById('f_m2m2').innerHTML = getMeshValue(y-2,x-2);
-    document.getElementById('f_m1m2').innerHTML = getMeshValue(y-2,x-1);
-    document.getElementById('f_0m2').innerHTML  = getMeshValue(y-2,x);
-    document.getElementById('f_p1m2').innerHTML = getMeshValue(y-2,x+1);
-    document.getElementById('f_p2m2').innerHTML = getMeshValue(y-2,x+2);
-
-    document.getElementById('f_m2m1').innerHTML = getMeshValue(y-1,x-2);
-    document.getElementById('f_m1m1').innerHTML = getMeshValue(y-1,x-1);
-    document.getElementById('f_0m1').innerHTML  = getMeshValue(y-1,x);
-    document.getElementById('f_p1m1').innerHTML = getMeshValue(y-1,x+1);
-    document.getElementById('f_p2m1').innerHTML = getMeshValue(y-1,x+2);
-
-    document.getElementById('f_m20').innerHTML = getMeshValue(y,x-2);
-    document.getElementById('f_m10').innerHTML = getMeshValue(y,x-1);
-    document.getElementById('f_00').innerHTML  = getMeshValue(y,x);
-    document.getElementById('f_p10').innerHTML = getMeshValue(y,x+1);
-    document.getElementById('f_p20').innerHTML = getMeshValue(y,x+2);
-
-    document.getElementById('f_m2p1').innerHTML = getMeshValue(y+1,x-2);
-    document.getElementById('f_m1p1').innerHTML = getMeshValue(y+1,x-1);
-    document.getElementById('f_0p1').innerHTML  = getMeshValue(y+1,x);
-    document.getElementById('f_p1p1').innerHTML = getMeshValue(y+1,x+1);
-    document.getElementById('f_p2p1').innerHTML = getMeshValue(y+1,x+2);
-    
-    document.getElementById('f_m2p2').innerHTML = getMeshValue(y+2,x-2);
-    document.getElementById('f_m1p2').innerHTML = getMeshValue(y+2,x-1);
-    document.getElementById('f_0p2').innerHTML  = getMeshValue(y+2,x);
-    document.getElementById('f_p1p2').innerHTML = getMeshValue(y+2,x+1);
-    document.getElementById('f_p2p2').innerHTML = getMeshValue(y+2,x+2);
   }
 
   function getMeshValue(y,x){
