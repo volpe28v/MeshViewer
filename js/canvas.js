@@ -144,14 +144,10 @@ function Canvas(params){
     self.fix_x = x;
     self.fix_y = y;
 
-    var latitude = calcLatitude(y);
-    var longitude = calcLongitude(x);
-
     self.params.clickHandlers.forEach(function(handler){
       handler({
-        latitude: latitude,
-        longitude: longitude,
-        value: self.mesh.meshArray[y][x]
+        x: x,
+        y: y
       });
     });
 
@@ -161,12 +157,12 @@ function Canvas(params){
   function updateFixedInfo(){
     var x = self.fix_x;
     var y = self.fix_y;
-    var latitude = calcLatitude(y);
-    var longitude = calcLongitude(x);
+    var lati = self.params.mapInfo.getLatitude(y);
+    var longi = self.params.mapInfo.getLongitude(x);
     var meshArray = self.mesh.meshArray;
 
     document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
-    document.getElementById('click_lati').innerHTML = "(" + latitude + " , " + longitude + ")";
+    document.getElementById('click_lati').innerHTML = "(" + lati + " , " + longi + ")";
     document.getElementById('click_value').innerHTML = meshArray[y][x] + " mm";
 
     // 周辺の値
@@ -209,14 +205,6 @@ function Canvas(params){
     }else{
       return meshArray[y][x];
     }
-  }
-
-  function calcLatitude(y){
-    return Math.round((self.params.mapInfo.startLatitude - (y * self.params.mapInfo.widthLongitude))*10000, 4)/10000;
-  }
-
-  function calcLongitude(x){
-    return Math.round((self.params.mapInfo.startLongitude + (x * self.params.mapInfo.widthLatitude))*10000, 4)/10000;
   }
 }
 

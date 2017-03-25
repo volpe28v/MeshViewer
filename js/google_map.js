@@ -39,8 +39,8 @@ function GoogleMap(params){
         var value = meshArray[y][x];
         var norm_raw = 255 * (value - min)/(max - min);
 
-        var lati = params.mapInfo.startLatitude - (y * params.mapInfo.widthLongitude);
-        var longi = params.mapInfo.startLongitude + (x * params.mapInfo.widthLatitude);
+        var lati = self.params.mapInfo.getLatitude(y);
+        var longi = self.params.mapInfo.getLongitude(x);
 
         if (norm_raw != 0){
           heatMapData.push({location: new google.maps.LatLng(lati, longi), weight: norm_raw});
@@ -63,7 +63,10 @@ function GoogleMap(params){
   }
 
   self.setMarker = function(params) {
-    var latlng = new google.maps.LatLng(params.latitude, params.longitude);
+    var lati = self.params.mapInfo.getLatitude(params.y);
+    var longi = self.params.mapInfo.getLongitude(params.x);
+
+    var latlng = new google.maps.LatLng(lati, longi);
     self.map.panTo(latlng);
     self.marker.setMap(self.map);
     self.marker.setPosition(latlng);
