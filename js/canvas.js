@@ -24,16 +24,11 @@ function Canvas(params){
     self.canvas.height = meshArray.length;
 
     // 最大値,最小値を求める
-    var max = 10; // デフォルト値
-    var min = 0;  // デフォルト値
     var flatten = Array.prototype.concat.apply([], meshArray);
-    for (var i = 0; i < flatten.length; i++){
-      if (max < Number(flatten[i])) max = flatten[i];
-      else if (min > Number(flatten[i])) min = flatten[i];
-    }
- 
+    var max = d3.max(flatten, function(d){ return Number(d)});
+    max = max > 10 ? max : 10;
+
     self.max = max;
-    self.min = min;
     var imageData = self.context.getImageData(0, 0, self.canvas.width, self.canvas.height);
     var width = imageData.width, height = imageData.height;
     var pixels = imageData.data;  // ピクセル配列：4要素で1ピクセル
@@ -43,7 +38,7 @@ function Canvas(params){
         var base = (y * width + x) * 4;
         var value = meshArray[y][x];
         // 255-0 に正規化
-        var norm_raw = 255 * (value - min)/(max - min);
+        var norm_raw = 255 * value / max;
         var norm = 255 - norm_raw;
 
         pixels[base + 0] = norm;
@@ -117,23 +112,27 @@ function Canvas(params){
     document.getElementById('v_p1p2').innerHTML = getMeshValue(y+2,x+1);
     document.getElementById('v_p2p2').innerHTML = getMeshValue(y+2,x+2);
 
+    var latiScale = d3.scaleLinear()
+      .domain([0, self.max])
+      .range([55, 5]);
+     
     d3.select('svg#latitude_line polyline')
       .transition()
       .duration(100)
       .attr('points', meshArray[y].map(function(d, i) {
-        return i + ' ' + (56 - (50 * (Number(d) - self.min)/(self.max - self.min)));
+        return i + ' ' + latiScale(Number(d));
       }).join(','));
 
-    var longiArray = [];
-    for( var i = 0; i < meshArray.length; i++){
-      longiArray.push(meshArray[i][x]);
-    }
-
+    var longiScale = d3.scaleLinear()
+      .domain([0, self.max])
+      .range([58, 8]);
+ 
+    var longiArray = meshArray.map(function(m){return m[x];});
     d3.select('svg#longitude_line polyline')
       .transition()
       .duration(100)
       .attr('points', longiArray.map(function(d, i) {
-        return (60 - (50 * (Number(d) - self.min)/(self.max - self.min)) + " " + i);
+        return longiScale(Number(d)) + " " + i;
       }).join(','));
   }
 
