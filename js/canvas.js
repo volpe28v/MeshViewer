@@ -61,41 +61,14 @@ function Canvas(params){
   function onMouseMove(e) {
     if (self.mesh == null) return;
 
-    var meshArray = self.mesh.meshArray;
     var rect = e.target.getBoundingClientRect();
     self.x = e.clientX - rect.left;
     self.y = e.clientY - rect.top;
 
-    var x = self.x;
-    var y = self.y;
-
-    var latiScale = d3.scaleLinear()
-      .domain([0, self.max])
-      .range([55, 5]);
-     
-    d3.select('svg#latitude_line polyline')
-      .transition()
-      .duration(100)
-      .attr('points', meshArray[y].map(function(d, i) {
-        return i + ' ' + latiScale(Number(d));
-      }).join(','));
-
-    var longiScale = d3.scaleLinear()
-      .domain([0, self.max])
-      .range([58, 8]);
- 
-    var longiArray = meshArray.map(function(m){return m[x];});
-    d3.select('svg#longitude_line polyline')
-      .transition()
-      .duration(100)
-      .attr('points', longiArray.map(function(d, i) {
-        return longiScale(Number(d)) + " " + i;
-      }).join(','));
-
     self.params.moveHandlers.forEach(function(handler){
       handler({
-        x: x,
-        y: y
+        x: self.x,
+        y: self.y
       });
     });
   }

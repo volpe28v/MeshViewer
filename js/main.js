@@ -4,6 +4,7 @@ var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
 var FileList = require("./file_list");
 var PointInfo = require("./point_info");
+var ProfileGraph = require("./profile_graph");
 var mapInfo = require("./map_info");
 
 var googleMap = new GoogleMap(
@@ -18,12 +19,15 @@ var pointInfo = new PointInfo(
   }
 );
 
+var profileGraph = new ProfileGraph();
+
 var canvas = new Canvas(
   {
     id: "mycanvas",
     mapInfo: mapInfo,
     moveHandlers:[
-      pointInfo.updateCoordinate
+      pointInfo.updateCoordinate,
+      profileGraph.updateCoordinate
     ],
     clickHandlers:[
       googleMap.setMarker,
@@ -45,7 +49,8 @@ var meshCollection = new MeshCollection(
       canvas.drawMesh,
       googleMap.setHeartMap,
       fileList.updateActive,
-      pointInfo.setMesh
+      pointInfo.setMesh,
+      profileGraph.setMesh
     ]
   });
 
