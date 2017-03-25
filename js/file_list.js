@@ -9,7 +9,7 @@ function FileList(params){
     var list = document.getElementById(self.params.id);
     list.innerHTML = self.meshes.map(function(mesh){
       if (mesh == self.active){
-        return '<li class="selected-csv"><b>' + mesh.name + '</b></li>';
+        return '<li class="selected-csv">' + mesh.name + '</li>';
       }else{
         return '<li>' + mesh.name + '</li>';
       }
