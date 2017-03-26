@@ -5,6 +5,7 @@ var MeshCollection = require("./mesh_collection");
 var FileList = require("./file_list");
 var PointInfo = require("./point_info");
 var ProfileGraph = require("./profile_graph");
+var TimelineGraph = require("./timeline_graph");
 var mapInfo = require("./map_info");
 
 var googleMap = new GoogleMap(
@@ -20,6 +21,7 @@ var pointInfo = new PointInfo(
 );
 
 var profileGraph = new ProfileGraph();
+var timelineGraph = new TimelineGraph();
 
 var canvas = new Canvas(
   {
@@ -31,7 +33,8 @@ var canvas = new Canvas(
     ],
     clickHandlers:[
       googleMap.setMarker,
-      pointInfo.updateFixedCoordinate
+      pointInfo.updateFixedCoordinate,
+      timelineGraph.updateCoordinate
     ]
   });
 
@@ -43,14 +46,16 @@ var fileList = new FileList(
 var meshCollection = new MeshCollection(
   {
     changeCollectionHandlers: [
-      fileList.updateList
+      fileList.updateList,
+      timelineGraph.updateMeshes
     ],
     changeActiveMeshHandlers: [
       canvas.drawMesh,
       googleMap.setHeartMap,
       fileList.updateActive,
       pointInfo.setMesh,
-      profileGraph.setMesh
+      profileGraph.setMesh,
+      timelineGraph.updateActive
     ]
   });
 
