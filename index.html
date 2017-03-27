@@ -64,7 +64,7 @@ body {
 }
 
 #v_00, #f_00, .selected-csv {
-  color: yellow;
+  color: #dccb18;
 }
 
     </style>
@@ -110,7 +110,8 @@ body {
           </table>
         </td>
         <td valign="top">
-          <div id="map_canvas" style="margin-top: 60px; width:481px; height:505px"></div>
+          <svg id="timeline" width="505" height="60" style="margin-top: 0px; background: black; display: block;"></svg>
+          <div id="map_canvas" style="margin-top: 0px; width:481px; height:505px"></div>
 
           <table>
             <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
@@ -129,7 +130,6 @@ body {
       </tr>
     </table>
 
-    <svg id="timeline" width="800" height="200" style="margin-top: 0px; background: black; display: block;"></svg>
 
     <script type="text/javascript" src="dist/bundle.js">
     </script>
