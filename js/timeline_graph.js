@@ -23,6 +23,7 @@ function TimelineGraph(){
     timeline.enter().append('rect');
     timeline.exit().remove();
     timeline
+      .transition()
       .attr("x", function(d, i){ return i * xWidth; })
       .attr("y", function(d){ return 56 - yScale(Number(d.meshArray[y][x]))})
       .attr("width", xWidth - 2)
