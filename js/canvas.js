@@ -19,8 +19,8 @@ function Canvas(params){
     self.mesh = mesh;
     var meshArray = mesh.meshArray;
 
-    self.canvas.width = meshArray[0].length;
-    self.canvas.height = meshArray.length;
+    self.canvas.width = self.cursor.width = meshArray[0].length;
+    self.canvas.height = self.cursor.height = meshArray.length;
 
     // 最大値,最小値を求める
     var flatten = Array.prototype.concat.apply([], meshArray);
@@ -52,6 +52,8 @@ function Canvas(params){
     self.context.putImageData(imageData, 0, 0);
 
     document.getElementById('file_name').innerHTML = mesh.name;
+
+    drawCursorLine();
   }
 
 
@@ -81,8 +83,8 @@ function Canvas(params){
   function drawCursorLine(){
     self.cursor_ctx.clearRect(0,0,self.canvas.width, self.canvas.height);
 
-    lineToContext(self.cursor_ctx, 0, self.y, self.canvas.width, self.y, 'deepskyblue', 0.3);
-    lineToContext(self.cursor_ctx, self.x, 0, self.x, self.canvas.height, 'deepskyblue', 0.3);
+    lineToContext(self.cursor_ctx, 0, self.y, self.cursor.width, self.y, 'deepskyblue', 0.3);
+    lineToContext(self.cursor_ctx, self.x, 0, self.x, self.cursor.height, 'deepskyblue', 0.3);
 
     if (self.x != null){
       lineToContext(self.cursor_ctx, self.fix_x - 10, self.fix_y, self.fix_x + 10, self.fix_y, 'red', 0.5);
