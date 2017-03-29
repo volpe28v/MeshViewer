@@ -25,7 +25,6 @@ var timelineGraph = new TimelineGraph();
 
 var canvas = new Canvas(
   {
-    id: "mycanvas",
     mapInfo: mapInfo,
     moveHandlers:[
       pointInfo.updateCoordinate,

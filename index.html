@@ -27,7 +27,6 @@ body {
   width: 481px;
   height: 505px;
   background-color:#eee;
-  text-align:center;
 }
 
 #drop_msg {
@@ -67,6 +66,14 @@ body {
   color: #dccb18;
 }
 
+#drop_zone{
+  position: relative;
+}
+
+#drop_zone canvas {
+  position: absolute;
+}
+
     </style>
   </head>
   <body>
@@ -93,7 +100,8 @@ body {
 
           <div id="drop_zone">
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
-            <canvas id="mycanvas" width="481" height="505"></canvas>
+            <canvas id="draw_canvas" width="481" height="505"></canvas>
+            <canvas id="cursor_canvas" width="481" height="505"></canvas>
           </div>
           <table>
             <tr><td>座標</td><td><span id="pos"></span></td></tr>

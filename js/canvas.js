@@ -2,15 +2,18 @@ function Canvas(params){
   var self = this;
   self.params = params;
 
-  self.canvas = document.getElementById('mycanvas');
+  self.canvas = document.getElementById('draw_canvas');
   self.context = self.canvas.getContext('2d');
+
+  self.cursor = document.getElementById('cursor_canvas');
+  self.cursor_ctx = self.cursor.getContext('2d');
 
   self.mesh = null;
 
-  self.canvas.addEventListener('mouseover', onMouseOver, false);
-  self.canvas.addEventListener('mouseout', onMouseOut, false);
-  self.canvas.addEventListener('mousemove', onMouseMove, false);
-  self.canvas.addEventListener('click', onClick, false);
+  self.cursor.addEventListener('mouseover', onMouseOver, false);
+  self.cursor.addEventListener('mouseout', onMouseOut, false);
+  self.cursor.addEventListener('mousemove', onMouseMove, false);
+  self.cursor.addEventListener('click', onClick, false);
 
   self.drawMesh = function(mesh){
     self.mesh = mesh;
@@ -65,6 +68,8 @@ function Canvas(params){
     self.x = e.clientX - rect.left;
     self.y = e.clientY - rect.top;
 
+    drawCursorLine();
+
     self.params.moveHandlers.forEach(function(handler){
       handler({
         x: self.x,
@@ -73,6 +78,30 @@ function Canvas(params){
     });
   }
 
+  function drawCursorLine(){
+    self.cursor_ctx.clearRect(0,0,self.canvas.width, self.canvas.height);
+
+    lineToContext(self.cursor_ctx, 0, self.y, self.canvas.width, self.y, 'deepskyblue', 0.3);
+    lineToContext(self.cursor_ctx, self.x, 0, self.x, self.canvas.height, 'deepskyblue', 0.3);
+
+    if (self.x != null){
+      lineToContext(self.cursor_ctx, self.fix_x - 10, self.fix_y, self.fix_x + 10, self.fix_y, 'red', 0.5);
+      lineToContext(self.cursor_ctx, self.fix_x, self.fix_y - 10, self.fix_x, self.fix_y + 10, 'red', 0.5);
+    }
+  }
+
+  function lineToContext(ctx, sx, sy, ex, ey, color, alpha){
+    ctx.globalAlpha = alpha;
+
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(ex, ey);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+
   function onClick(e) {
     if (self.mesh == null) return;
 
@@ -80,6 +109,8 @@ function Canvas(params){
     var y = self.y;
     self.fix_x = x;
     self.fix_y = y;
+
+    drawCursorLine();
 
     self.params.clickHandlers.forEach(function(handler){
       handler({
