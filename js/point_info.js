@@ -39,6 +39,7 @@ function PointInfo(params){
 
     document.getElementById('pos').innerHTML = "(" + x + " , " + y + ")";
     document.getElementById('lati').innerHTML = "(" + lati + " , " + longi + ")";
+    document.getElementById('60_lati').innerHTML = conv60(lati) + " , " + conv60(longi);
     document.getElementById('value').innerHTML = meshArray[y][x] + " mm";
 
     // 周辺の値
@@ -83,6 +84,7 @@ function PointInfo(params){
 
     document.getElementById('click_pos').innerHTML = "(" + x + " , " + y + ")";
     document.getElementById('click_lati').innerHTML = "(" + lati + " , " + longi + ")";
+    document.getElementById('click_60_lati').innerHTML = conv60(lati) + " , " + conv60(longi);
     document.getElementById('click_value').innerHTML = meshArray[y][x] + " mm";
 
     // 周辺の値
@@ -125,6 +127,14 @@ function PointInfo(params){
     }else{
       return meshArray[y][x];
     }
+  }
+
+  function conv60(input){
+    var degree = Math.floor(input);
+    var minute = Math.floor((input - degree) * 60);
+    var second = Math.floor((((input - degree) * 60) - minute) * 60);
+
+    return degree + "度 " + minute + "分 " + second + "秒";
   }
 }
 
