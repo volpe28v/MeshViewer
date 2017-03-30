@@ -73,4 +73,23 @@ window.onload = function () {
   document.getElementById("next_mesh").onclick = function(){
     meshCollection.next();
   };
+
+  document.onkeydown = function (e){
+    var key_code = e.keyCode;
+
+    switch(key_code){
+      case 72: //h
+        canvas.moveFixCursor(-1,0);
+        break;
+      case 74: //j
+        canvas.moveFixCursor(0,1);
+        break;
+      case 75: //k
+        canvas.moveFixCursor(0,-1);
+        break;
+      case 76: //l
+        canvas.moveFixCursor(1,0);
+        break;
+    }
+  }
 }

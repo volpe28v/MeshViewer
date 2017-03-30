@@ -57,6 +57,20 @@ function Canvas(params){
   }
 
 
+  self.moveFixCursor = function(x,y){
+    self.fix_x += x;
+    self.fix_y += y;
+
+    drawCursorLine();
+
+    self.params.clickHandlers.forEach(function(handler){
+      handler({
+        x: self.fix_x,
+        y: self.fix_y
+      });
+    });
+  }
+
   function onMouseOver(e) {
   }
 
