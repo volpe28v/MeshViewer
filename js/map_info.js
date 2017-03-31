@@ -1,5 +1,5 @@
 module.exports = {
-  startLatitude: 46.7,
+  startLatitude: 47.6,
   startLongitude: 120,
   widthLatitude: 0.0625,
   widthLongitude: 0.05,
