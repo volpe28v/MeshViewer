@@ -2,11 +2,13 @@ var GoogleMap = require("./google_map");
 var DropZone = require("./drop_zone");
 var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
-var FileList = require("./file_list");
 var PointInfo = require("./point_info");
 var ProfileGraph = require("./profile_graph");
 var TimelineGraph = require("./timeline_graph");
 var mapInfo = require("./map_info");
+
+// vue vm
+var fileList = require("./file_list");
 
 var googleMap = new GoogleMap(
   {
@@ -35,11 +37,6 @@ var canvas = new Canvas(
       pointInfo.updateFixedCoordinate,
       timelineGraph.updateCoordinate
     ]
-  });
-
-var fileList = new FileList(
-  {
-    id: "file_list"
   });
 
 var meshCollection = new MeshCollection(

@@ -4,6 +4,7 @@
     <title>MeshViewer</title>
     <script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD06ErexK0u1vnaXGci0_JuuwCm2jkN36s&libraries=visualization"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,7 +86,9 @@ body {
             <input type="button" id="pre_mesh" value="<"/>
             <input type="button" id="next_mesh" value=">"/>
             <div id="file_name"></div>
-            <ul id="file_list"></ul>
+            <ul id="file_list">
+              <li v-for="mesh in meshes" v-bind:class="{'selected-csv': isActive(mesh)}">{{mesh.name}}</li>
+            </ul>
           </div>
         </td>
         <td valign="top">
