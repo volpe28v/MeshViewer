@@ -78,6 +78,7 @@ body {
     </style>
   </head>
   <body>
+    <div id="app">
     <table>
       <tr>
         <td valign="top">
@@ -86,9 +87,7 @@ body {
             <input type="button" id="pre_mesh" value="<"/>
             <input type="button" id="next_mesh" value=">"/>
             <div id="file_name"></div>
-            <ul id="file_list">
-              <li v-for="mesh in meshes" v-bind:class="{'selected-csv': isActive(mesh)}">{{mesh.name}}</li>
-            </ul>
+            <file-list :meshes="meshes" :active="active"></file-list>
           </div>
         </td>
         <td valign="top">
@@ -122,7 +121,7 @@ body {
           </table>
         </td>
         <td valign="top">
-          <svg id="timeline" width="505" height="60" style="margin-top: 0px; background: black; display: block;"></svg>
+          <timeline-graph :meshes="meshes" :active="active" :x="x" :y="y"></timeline-graph>
           <div id="map_canvas" style="margin-top: 0px; width:481px; height:505px"></div>
 
           <table>
@@ -142,7 +141,7 @@ body {
         </td>
       </tr>
     </table>
-
+    </div>
 
     <script type="text/javascript" src="dist/bundle.js">
     </script>

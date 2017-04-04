@@ -1,51 +1,54 @@
-function TimelineGraph(){
-  var self = this;
+var timelineGraph = Vue.component('timeline-graph',{
+  template: '<svg id="timeline" width="505" height="60" style="margin-top: 0px; background: black; display: block;"></svg>',
 
-  self.meshes = null;
-  self.active = null;
-  self.x = 0;
-  self.y = 0;
+  props: ['meshes', 'active', 'x', 'y'],
 
-  function reflesh(){
-    var x = self.x;
-    var y = self.y;
+  watch: {
+    meshes: function(){
+      this.reflesh();
+    },
+    active: function(){
+      this.reflesh();
+    },
+    x: function(){
+      this.reflesh();
+    },
+    y: function(){
+      this.reflesh();
+    }
+  },
 
-    var max = d3.max(self.meshes, function(d){ return Number(d.meshArray[y][x]);});
-    var xWidth = 481 / self.meshes.length;
-    xWidth = xWidth > 20 ? 20 : xWidth;
+  methods: {
+    reflesh: function(){
+      if (this.meshes == null || this.meshes.length == 0){ return; }
 
-    var yScale = d3.scaleLinear()
-      .domain([0, max])
-      .range([2, 57]);
+      var self = this;
+      var x = self.x;
+      var y = self.y;
 
-    var timeline= d3.select('svg#timeline')
-      .selectAll('rect').data(self.meshes);
-    timeline.enter().append('rect');
-    timeline.exit().remove();
-    timeline
-      .transition()
-      .attr("x", function(d, i){ return i * xWidth; })
-      .attr("y", function(d){ return 56 - yScale(Number(d.meshArray[y][x]))})
-      .attr("width", xWidth - 2)
-      .attr("height", function(d){ return yScale(Number(d.meshArray[y][x]))})
-      .attr("fill", function(d){ return d == self.active ? "#dccb18" : "deepskyblue";});
+      var max = d3.max(self.meshes, function(d){ return Number(d.meshArray[y][x]);});
+      var xWidth = 481 / self.meshes.length;
+      xWidth = xWidth > 20 ? 20 : xWidth;
+
+      var yScale = d3.scaleLinear()
+        .domain([0, max])
+        .range([2, 57]);
+
+      var timeline = d3.select('svg#timeline')
+        .selectAll('rect').data(self.meshes);
+      timeline.enter().append('rect');
+      timeline.exit().remove();
+
+      timeline = d3.select('svg#timeline')
+        .selectAll('rect')
+        .transition()
+        .attr("x", function(d, i){ return i * xWidth; })
+        .attr("y", function(d){ return 56 - yScale(Number(d.meshArray[y][x]))})
+        .attr("width", xWidth - 2)
+        .attr("height", function(d){ return yScale(Number(d.meshArray[y][x]))})
+        .attr("fill", function(d){ return d == self.active ? "#dccb18" : "deepskyblue";});
+    }
   }
+});
 
-  self.updateMeshes = function(meshes){
-    self.meshes = meshes;
-    reflesh();
-  }
-
-  self.updateActive = function(active){
-    self.active = active;
-    reflesh();
-  }
-
-  self.updateCoordinate = function(params){
-    self.x = params.x;
-    self.y = params.y;
-    reflesh();
-  }
-}
-
-module.exports = TimelineGraph;
+module.exports = timelineGraph;
