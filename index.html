@@ -122,7 +122,7 @@ body {
         </td>
         <td valign="top">
           <timeline-graph :meshes="meshes" :active="active" :x="x" :y="y"></timeline-graph>
-          <div id="map_canvas" style="margin-top: 0px; width:481px; height:505px"></div>
+          <google-map :active="active" :x="x" :y="y"></google-map>
 
           <table>
             <tr><td>座標</td><td><span id="click_pos"></span></td></tr>

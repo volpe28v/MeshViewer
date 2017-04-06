@@ -1,4 +1,3 @@
-var GoogleMap = require("./google_map");
 var DropZone = require("./drop_zone");
 var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
@@ -9,6 +8,7 @@ var mapInfo = require("./map_info");
 // vue vm
 var fileList = require("./file_list");
 var timelineGraph = require("./timeline_graph");
+var googleMap = require("./google_map");
 
 new Vue({
   el: '#app',
@@ -19,14 +19,6 @@ new Vue({
     y: 0
   },
   mounted: function(){
-    console.log("vue created");
-
-    var googleMap = new GoogleMap(
-      {
-        id: "map_canvas",
-        mapInfo: mapInfo
-      });
-
     var pointInfo = new PointInfo(
       {
         mapInfo: mapInfo
@@ -43,7 +35,6 @@ new Vue({
           profileGraph.updateCoordinate
         ],
         clickHandlers:[
-          googleMap.setMarker,
           pointInfo.updateFixedCoordinate,
           function(params){
             self.x = params.x;
@@ -60,7 +51,6 @@ new Vue({
         ],
         changeActiveMeshHandlers: [
           canvas.drawMesh,
-          googleMap.setHeartMap,
           pointInfo.setMesh,
           profileGraph.setMesh,
           function(mesh){ self.active = mesh; }
