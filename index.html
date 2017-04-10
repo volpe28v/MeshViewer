@@ -105,39 +105,13 @@ body {
             <canvas id="draw_canvas" width="481" height="505"></canvas>
             <canvas id="cursor_canvas" width="481" height="505"></canvas>
           </div>
-          <table>
-            <tr><td>座標</td><td><span id="pos"></span></td></tr>
-            <tr><td>緯度・経度</td><td><span id="lati"></span></td></tr>
-            <tr><td>60進数</td><td><span id="60_lati"></span></td></tr>
-            <tr><td>降水量</td><td><span id="value"></span></td></tr>
-          </table>
-
-          <table class="around">
-            <tr><td id="v_m2m2">0</td><td id="v_m1m2">0</td><td id="v_0m2">0</td><td id="v_p1m2">0</td><td id="v_p2m2">0</td></tr>
-            <tr><td id="v_m2m1">0</td><td id="v_m1m1">0</td><td id="v_0m1">0</td><td id="v_p1m1">0</td><td id="v_p2m1">0</td></tr>
-            <tr><td id="v_m20">0</td><td id="v_m10">0</td><td id="v_00">0</td><td id="v_p10">0</td><td id="v_p20">0</td></tr>
-            <tr><td id="v_m2p1">0</td><td id="v_m1p1">0</td><td id="v_0p1">0</td><td id="v_p1p1">0</td><td id="v_p2p1">0</td></tr>
-            <tr><td id="v_m2p2">0</td><td id="v_m1p2">0</td><td id="v_0p2">0</td><td id="v_p1p2">0</td><td id="v_p2p2">0</td></tr>
-          </table>
+          <point-info :mesh="active" :x="x" :y="y"></point-info>
         </td>
         <td valign="top">
-          <timeline-graph :meshes="meshes" :active="active" :x="x" :y="y"></timeline-graph>
-          <google-map :active="active" :x="x" :y="y"></google-map>
+          <timeline-graph :meshes="meshes" :active="active" :x="fix_x" :y="fix_y"></timeline-graph>
+          <google-map :active="active" :x="fix_x" :y="fix_y"></google-map>
 
-          <table>
-            <tr><td>座標</td><td><span id="click_pos"></span></td></tr>
-            <tr><td>緯度・経度</td><td><span id="click_lati"></span></td></tr>
-            <tr><td>60進数</td><td><span id="click_60_lati"></span></td></tr>
-            <tr><td>降水量</td><td><span id="click_value"></span></td></tr>
-          </table>
-
-          <table class="around">
-            <tr><td id="f_m2m2">0</td><td id="f_m1m2">0</td><td id="f_0m2">0</td><td id="f_p1m2">0</td><td id="f_p2m2">0</td></tr>
-            <tr><td id="f_m2m1">0</td><td id="f_m1m1">0</td><td id="f_0m1">0</td><td id="f_p1m1">0</td><td id="f_p2m1">0</td></tr>
-            <tr><td id="f_m20">0</td><td id="f_m10">0</td><td id="f_00">0</td><td id="f_p10">0</td><td id="f_p20">0</td></tr>
-            <tr><td id="f_m2p1">0</td><td id="f_m1p1">0</td><td id="f_0p1">0</td><td id="f_p1p1">0</td><td id="f_p2p1">0</td></tr>
-            <tr><td id="f_m2p2">0</td><td id="f_m1p2">0</td><td id="f_0p2">0</td><td id="f_p1p2">0</td><td id="f_p2p2">0</td></tr>
-          </table>
+          <point-info :mesh="active" :x="fix_x" :y="fix_y"></point-info>
         </td>
       </tr>
     </table>
