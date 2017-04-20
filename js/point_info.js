@@ -10,11 +10,11 @@ var pointInfo = Vue.component('point-info',{
 </table>\
 \
 <table class="around">\
-  <tr><td>{{meshValue(-2,-2)}}</td><td>{{meshValue(-1,-2)}}</td><td>{{meshValue(0,-2)}}</td><td>{{meshValue(1,-2)}}</td><td>{{meshValue(2,-2)}}</td></tr>\
-  <tr><td>{{meshValue(-2,-1)}}</td><td>{{meshValue(-1,-1)}}</td><td>{{meshValue(0,-1)}}</td><td>{{meshValue(1,-1)}}</td><td>{{meshValue(2,-1)}}</td></tr>\
-  <tr><td>{{meshValue(-2, 0)}}</td><td>{{meshValue(-1, 0)}}</td><td>{{meshValue(0, 0)}}</td><td>{{meshValue(1, 0)}}</td><td>{{meshValue(2, 0)}}</td></tr>\
-  <tr><td>{{meshValue(-2, 1)}}</td><td>{{meshValue(-1, 1)}}</td><td>{{meshValue(0, 1)}}</td><td>{{meshValue(1, 1)}}</td><td>{{meshValue(2, 1)}}</td></tr>\
-  <tr><td>{{meshValue(-2, 2)}}</td><td>{{meshValue(-1, 2)}}</td><td>{{meshValue(0, 2)}}</td><td>{{meshValue(1, 2)}}</td><td>{{meshValue(2, 2)}}</td></tr>\
+  <tr><td>{{pointValues[0][0]}}</td><td>{{pointValues[0][1]}}</td><td>{{pointValues[0][2]}}</td><td>{{pointValues[0][3]}}</td><td>{{pointValues[0][4]}}</td></tr>\
+  <tr><td>{{pointValues[1][0]}}</td><td>{{pointValues[1][1]}}</td><td>{{pointValues[1][2]}}</td><td>{{pointValues[1][3]}}</td><td>{{pointValues[1][4]}}</td></tr>\
+  <tr><td>{{pointValues[2][0]}}</td><td>{{pointValues[2][1]}}</td><td>{{pointValues[2][2]}}</td><td>{{pointValues[2][3]}}</td><td>{{pointValues[2][4]}}</td></tr>\
+  <tr><td>{{pointValues[3][0]}}</td><td>{{pointValues[3][1]}}</td><td>{{pointValues[3][2]}}</td><td>{{pointValues[3][3]}}</td><td>{{pointValues[3][4]}}</td></tr>\
+  <tr><td>{{pointValues[4][0]}}</td><td>{{pointValues[4][1]}}</td><td>{{pointValues[4][2]}}</td><td>{{pointValues[4][3]}}</td><td>{{pointValues[4][4]}}</td></tr>\
 </table>\
 </div>',
 
@@ -25,7 +25,14 @@ var pointInfo = Vue.component('point-info',{
       pos: "",
       lati: "",
       lati_60: "",
-      value: 0
+      value: 0,
+      pointValues: [
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+      ]
     }
   },
 
@@ -57,6 +64,12 @@ var pointInfo = Vue.component('point-info',{
       self.lati = "(" + lati + " , " + longi + ")";
       self.lati_60 = self.conv60(lati) + " , " + self.conv60(longi);
       self.value = meshArray[y][x] + " mm";
+
+      for(var j = -2; j < 3; j++){
+        for(var i = -2; i < 3; i++){
+          self.pointValues[j+2][i+2] = self.meshValue(j,i);
+        }
+      }
     },
 
     meshValue: function(y,x){
