@@ -10,6 +10,7 @@
 ### Technology
 * Vue.js
 * d3.js
+* svg
 * canvas
 * google map API
 
