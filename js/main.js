@@ -1,7 +1,6 @@
 var DropZone = require("./drop_zone");
 var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
-var ProfileGraph = require("./profile_graph");
 var mapInfo = require("./map_info");
 
 // vue vm
@@ -9,6 +8,8 @@ var fileList = require("./file_list");
 var timelineGraph = require("./timeline_graph");
 var googleMap = require("./google_map");
 var pointInfo = require("./point_info");
+var profileColGraph = require("./profile_col_graph");
+var profileRowGraph = require("./profile_row_graph");
 
 new Vue({
   el: '#app',
@@ -21,13 +22,10 @@ new Vue({
     fix_y: 0
   },
   mounted: function(){
-    var profileGraph = new ProfileGraph();
-
     var canvas = new Canvas(
       {
         mapInfo: mapInfo,
         moveHandlers:[
-          profileGraph.updateCoordinate,
           function(params){
             self.x = params.x;
             self.y = params.y;
@@ -49,7 +47,6 @@ new Vue({
         ],
         changeActiveMeshHandlers: [
           canvas.drawMesh,
-          profileGraph.setMesh,
           function(mesh){ self.active = mesh; }
         ]
       });

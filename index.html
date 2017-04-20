@@ -91,15 +91,10 @@ body {
           </div>
         </td>
         <td valign="top">
-          <svg id="longitude_line" width="60" height="505" style="margin-top: 60px; background: black; display: block;">
-            <polyline stroke="deepskyblue" stroke-width="2" fill="transparent" points=""></polyline>
-          </svg>
+          <profile-col-graph :mesh="active" :x="x" :y="y"></profile-col-graph>
         </td>
         <td valign="top">
-          <svg id="latitude_line" width="481" height="60" style="background: black; display: block;">
-            <polyline stroke="deepskyblue" stroke-width="2" fill="transparent" points=""></polyline>
-          </svg>
-
+          <profile-row-graph :mesh="active" :x="x" :y="y"></profile-row-graph>
           <div id="drop_zone">
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
             <canvas id="draw_canvas" width="481" height="505"></canvas>
