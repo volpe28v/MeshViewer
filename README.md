@@ -30,3 +30,9 @@ $ npm install
 ```
 $ webpack
 ```
+
+### Make Test Data
+```
+$ cd tools
+$ ruby csv_gen.rb > test.csv
+```
