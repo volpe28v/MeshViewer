@@ -4,6 +4,15 @@
 ### Screenshot
 ![top-page](https://github.com/volpe28v/MeshViewer/blob/images/screenshot.png)
 
+### Usage
+* メッシュデータ(481x505)のcsv ファイルをドロップする
+
+### Technology
+* Vue.js
+* d3.js
+* canvas
+* google map API
+
 ### Shortcut Keys
 ```
 h : move fixed cursor -x
