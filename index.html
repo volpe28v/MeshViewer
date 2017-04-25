@@ -97,8 +97,11 @@ body {
           <profile-row-graph :mesh="active" :x="x" :y="y"></profile-row-graph>
           <div id="drop_zone">
             <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
-            <canvas id="draw_canvas" width="481" height="505"></canvas>
-            <canvas id="cursor_canvas" width="481" height="505"></canvas>
+            <mesh-canvas
+                 :mesh="active" 
+                 v-on:move-coordinate="moveCoordinate"
+                 v-on:move-fix-coordinate="moveFixCoordinate"
+                 ></mesh-canvas>
           </div>
           <point-info :mesh="active" :x="x" :y="y"></point-info>
         </td>

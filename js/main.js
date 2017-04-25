@@ -1,5 +1,4 @@
 var DropZone = require("./drop_zone");
-var Canvas = require("./canvas");
 var MeshCollection = require("./mesh_collection");
 var mapInfo = require("./map_info");
 
@@ -10,6 +9,7 @@ var googleMap = require("./google_map");
 var pointInfo = require("./point_info");
 var profileColGraph = require("./profile_col_graph");
 var profileRowGraph = require("./profile_row_graph");
+var meshCanvas = require("./mesh_canvas");
 
 new Vue({
   el: '#app',
@@ -22,23 +22,6 @@ new Vue({
     fix_y: 0
   },
   mounted: function(){
-    var canvas = new Canvas(
-      {
-        mapInfo: mapInfo,
-        moveHandlers:[
-          function(params){
-            self.x = params.x;
-            self.y = params.y;
-          }
-        ],
-        clickHandlers:[
-          function(params){
-            self.fix_x = params.x;
-            self.fix_y = params.y;
-          }
-        ]
-      });
-
     var self = this;
     var meshCollection = new MeshCollection(
       {
@@ -46,7 +29,6 @@ new Vue({
           function(meshes){ self.meshes = meshes; }
         ],
         changeActiveMeshHandlers: [
-          canvas.drawMesh,
           function(mesh){ self.active = mesh; }
         ]
       });
@@ -66,25 +48,17 @@ new Vue({
       document.getElementById("next_mesh").onclick = function(){
         meshCollection.next();
       };
+    }
+  },
 
-      document.onkeydown = function (e){
-        var key_code = e.keyCode;
-
-        switch(key_code){
-          case 72: //h
-            canvas.moveFixCursor(-1,0);
-            break;
-          case 74: //j
-            canvas.moveFixCursor(0,1);
-            break;
-          case 75: //k
-            canvas.moveFixCursor(0,-1);
-            break;
-          case 76: //l
-            canvas.moveFixCursor(1,0);
-            break;
-        }
-      }
+  methods: {
+    moveCoordinate: function(params){
+      this.x = params.x;
+      this.y = params.y;
+    },
+    moveFixCoordinate: function(params){
+      this.fix_x = params.x;
+      this.fix_y = params.y;
     }
   }
 });
