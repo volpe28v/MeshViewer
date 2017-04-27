@@ -1,8 +1,8 @@
-var DropZone = require("./drop_zone");
 var MeshCollection = require("./mesh_collection");
 var mapInfo = require("./map_info");
 
 // vue vm
+var dropZone = require("./drop_zone");
 var fileList = require("./file_list");
 var timelineGraph = require("./timeline_graph");
 var googleMap = require("./google_map");
@@ -19,11 +19,12 @@ new Vue({
     x: 0,
     y: 0,
     fix_x: 0,
-    fix_y: 0
+    fix_y: 0,
+    meshCollection: null
   },
   mounted: function(){
     var self = this;
-    var meshCollection = new MeshCollection(
+    self.meshCollection = new MeshCollection(
       {
         changeCollectionHandlers: [
           function(meshes){ self.meshes = meshes; }
@@ -33,25 +34,20 @@ new Vue({
         ]
       });
 
-    var dropZone = new DropZone(
-      {
-        id: "drop_zone",
-        createMeshHandlers: [
-          meshCollection.add
-        ]
-      });
-
     window.onload = function () {
       document.getElementById("pre_mesh").onclick = function(){
-        meshCollection.pre();
+        self.meshCollection.pre();
       };
       document.getElementById("next_mesh").onclick = function(){
-        meshCollection.next();
+        self.meshCollection.next();
       };
     }
   },
 
   methods: {
+    addMesh: function(mesh){
+      this.meshCollection.add(mesh);
+    },
     moveCoordinate: function(params){
       this.x = params.x;
       this.y = params.y;

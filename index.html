@@ -95,14 +95,15 @@ body {
         </td>
         <td valign="top">
           <profile-row-graph :mesh="active" :x="x" :y="y"></profile-row-graph>
-          <div id="drop_zone">
-            <div id="drop_msg">ここにMSMデータの csv ファイルをドロップしてください</div>
+          <drop-zone
+            v-on:add-mesh="addMesh">
             <mesh-canvas
-                 :mesh="active" 
-                 v-on:move-coordinate="moveCoordinate"
-                 v-on:move-fix-coordinate="moveFixCoordinate"
-                 ></mesh-canvas>
-          </div>
+              slot="content"
+              :mesh="active" 
+              v-on:move-coordinate="moveCoordinate"
+              v-on:move-fix-coordinate="moveFixCoordinate"
+            ></mesh-canvas>
+          </drop-zone>
           <point-info :mesh="active" :x="x" :y="y"></point-info>
         </td>
         <td valign="top">
