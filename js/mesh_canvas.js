@@ -84,9 +84,6 @@ var meshCanvas = Vue.component('mesh-canvas',{
       self.canvas.style.display = "block";
       document.getElementById('drop_msg').style.display = "none";
       self.context.putImageData(imageData, 0, 0);
-
-      document.getElementById('file_name').innerHTML = self.mesh.name;
-
       self.drawCursorLine();
     },
 

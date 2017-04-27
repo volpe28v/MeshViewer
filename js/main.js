@@ -22,6 +22,7 @@ new Vue({
     fix_y: 0,
     meshCollection: null
   },
+
   mounted: function(){
     var self = this;
     self.meshCollection = new MeshCollection(
@@ -33,20 +34,17 @@ new Vue({
           function(mesh){ self.active = mesh; }
         ]
       });
-
-    window.onload = function () {
-      document.getElementById("pre_mesh").onclick = function(){
-        self.meshCollection.pre();
-      };
-      document.getElementById("next_mesh").onclick = function(){
-        self.meshCollection.next();
-      };
-    }
   },
 
   methods: {
     addMesh: function(mesh){
       this.meshCollection.add(mesh);
+    },
+    preMesh: function(){
+      this.meshCollection.pre();
+    },
+    nextMesh: function(){
+      this.meshCollection.next();
     },
     moveCoordinate: function(params){
       this.x = params.x;

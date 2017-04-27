@@ -84,9 +84,8 @@ body {
         <td valign="top">
           <div id="info_area">
             <h4>MSM Rain Forecast</h4>
-            <input type="button" id="pre_mesh" value="<"/>
-            <input type="button" id="next_mesh" value=">"/>
-            <div id="file_name"></div>
+            <button v-on:click="preMesh"><</button>
+            <button v-on:click="nextMesh">></button>
             <file-list :meshes="meshes" :active="active"></file-list>
           </div>
         </td>
