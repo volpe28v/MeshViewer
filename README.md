@@ -5,7 +5,10 @@
 ![top-page](https://github.com/volpe28v/MeshViewer/blob/images/screenshot.png)
 
 ### Usage
-* メッシュデータ(481x505)のcsv ファイルをドロップする
+* メッシュデータ(481x505)のcsv ファイルをドロップする(複数ファイル可)
+* 左側のエリアにマウスカーソルを当てると直下の値が表示される
+* マウスクリックした位置の場所とデータが右側の google map に反映される
+* ファイルリスト上の ＜　＞　をクリックすることで表示ファイルを変更できる
 
 ### Technology
 * Vue.js
