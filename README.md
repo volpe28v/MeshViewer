@@ -5,6 +5,7 @@
 ![top-page](https://github.com/volpe28v/MeshViewer/blob/images/screenshot.png)
 
 ### Usage
+* index.html の <GoogleMapAPI_Key> の部分を取得したキーで置き換える
 * index.html をブラウザでオープン
 * メッシュデータ(481x505)のcsv ファイルをドロップする(複数ファイル可)
 * 左側のエリアにマウスカーソルを当てると直下の値が表示される
